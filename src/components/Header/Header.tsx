@@ -17,8 +17,7 @@ import useNavigationMenu from "@/hooks/useNavigationMenu";
 
 const Header = () => {
     const [user] = useAuthState(auth);
-    const roleData = user ? useUserRole(user) : { role: null, loading: false, error: null };
-    const { role, loading: roleLoading, error: roleError } = roleData;
+    const { role, loading: roleLoading, error: roleError } = useUserRole(user ?? null);
 
     const {
         isModalOpen,
@@ -30,7 +29,7 @@ const Header = () => {
         switchToSignIn,
     } = useModal();
 
-    const { isOpen, toggleMenu } = useNavigationMenu();
+    const { isOpen, toggleMenu, closeMenu } = useNavigationMenu();
 
     return (
         <header className="bg-primary-dark text-white p-4 fixed w-full z-20 shadow-lg">
@@ -48,7 +47,11 @@ const Header = () => {
                 {/* Contenedor del menú y opciones de usuario */}
                 <div className="flex items-center space-x-4">
                     {/* Menú de Navegación */}
-                    <NavigationMenu isOpen={isOpen} toggleMenu={toggleMenu} />
+                    <NavigationMenu
+                        isOpen={isOpen}
+                        toggleMenu={toggleMenu}
+                        user={user != null} // Cambiado a un booleano indicando si hay un usuario autenticado.
+                    />
 
                     {/* Toggle Dark Mode */}
                     <ToggleDarkMode />
@@ -58,7 +61,9 @@ const Header = () => {
                         <p>Cargando...</p>
                     ) : roleError ? (
                         <p>Error: {roleError}</p>
-                    ) : !user ? (
+                    ) : user != null ? (
+                        <UserMenu user={user} role={role || "viewer"} />
+                    ) : (
                         <div className="hidden md:flex space-x-4">
                             <button
                                 onClick={openModal}
@@ -73,8 +78,6 @@ const Header = () => {
                                 Registrarse
                             </button>
                         </div>
-                    ) : (
-                        <UserMenu user={user} role={role || "viewer"} />
                     )}
 
                     {/* Botón de Menú para Móviles */}

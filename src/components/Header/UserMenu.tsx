@@ -78,7 +78,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user, role }) => {
                                 </li>
                                 <li>
                                     <Link
-                                        href="/cms/create"
+                                        href="/cms/blogs/create"
                                         className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700"
                                         onClick={() => setMenuOpen(false)}
                                     >
@@ -87,9 +87,9 @@ const UserMenu: React.FC<UserMenuProps> = ({ user, role }) => {
                                 </li>
                                 <li>
                                     <Link
-                                        href="/cms/list"
+                                        href="/cms/blogs"
                                         className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700"
-                                        onClick={() => setMenuOpen(false)}
+                                        onClick={() => setMenuOpen(false)} // Asegúrate de que setMenuOpen existe
                                     >
                                         Lista de Blogs
                                     </Link>

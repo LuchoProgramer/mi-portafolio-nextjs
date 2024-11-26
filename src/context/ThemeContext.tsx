@@ -11,10 +11,10 @@ interface ThemeContextType {
 // Contexto con valor inicial
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+// Proveedor del tema
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     const [isDark, setIsDark] = useState(false);
 
-    // Recuperar el tema de localStorage o usar preferencia del sistema
     useEffect(() => {
         const storedTheme = localStorage.getItem("theme");
         if (storedTheme) {
@@ -25,7 +25,6 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
         }
     }, []);
 
-    // Actualizar el tema en el DOM y localStorage
     useEffect(() => {
         if (isDark) {
             document.documentElement.classList.add("dark");
@@ -44,11 +43,14 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     );
 };
 
-// Hook personalizado para usar el contexto
-export const useTheme = () => {
+// Hook personalizado para consumir el contexto
+export const useTheme = (): ThemeContextType => {
     const context = useContext(ThemeContext);
     if (!context) {
         throw new Error("useTheme debe usarse dentro de ThemeProvider");
     }
     return context;
 };
+
+// Exportación nombrada de ThemeContext
+export { ThemeContext };
