@@ -131,3 +131,27 @@ button:focus-visible {
 * {
   transition: background-color 0.3s, color 0.3s;
 }
+
+
+
+/* Elimina el fondo y bordes del contenedor del popup */
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+/* Ajusta el contenido del popup */
+.leaflet-popup-content {
+  margin: 0 !important;
+  line-height: normal !important;
+  width: auto !important;
+  text-align: center;
+}
+
+/* Elimina el botón de cierre si no es necesario */
+.leaflet-popup-close-button {
+  display: none !important;
+}
