@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import "leaflet/dist/leaflet.css";
 import "leaflet.awesome-markers/dist/leaflet.awesome-markers.css";
 import "@fortawesome/fontawesome-free/css/all.css";
+import styles from "./TravelMap.module.css"; // Importa el módulo CSS
 import { useTheme } from "@/context/ThemeContext";
 import { LatLngTuple } from "leaflet";
-
 
 const travelRoute = [
     { name: 'Quito', coords: [-0.1807, -78.4678], img: 'https://res.cloudinary.com/dltfsttr7/image/upload/v1731947461/Quito_gag520.jpg' },
@@ -51,75 +51,81 @@ const travelRoute = [
 
 function TravelMap() {
     const { isDark } = useTheme();
-    const mapRef = useRef<HTMLDivElement>(null); // Referencia al contenedor del mapa
-    const [mapInstance, setMapInstance] = useState<any>(null); // Instancia del mapa
+    const mapContainerRef = useRef<HTMLDivElement>(null);
+    const mapRef = useRef<any>(null);
+    const tileLayerRef = useRef<any>(null);
+    const LRef = useRef<any>(null);
 
     useEffect(() => {
-        let map: any = null;
-
         const initializeMap = async () => {
-            const { default: L } = await import("leaflet");
-            (window as any).L = L; // Asignamos L a window.L para que sea accesible globalmente
-
-            await import("leaflet.awesome-markers");
-
-            // Si ya hay una instancia previa, elimínala
-            if (mapInstance) {
-                mapInstance.remove();
-                setMapInstance(null);
+            if (!LRef.current) {
+                const { default: L } = await import("leaflet");
+                (window as any).L = L;
+                await import("leaflet.awesome-markers");
+                LRef.current = L;
             }
 
-            // Crear la instancia del mapa
-            map = L.map(mapRef.current!, {
-                center: [-20.0, -60.0],
-                zoom: 4,
-                layers: [
-                    L.tileLayer(
-                        isDark
-                            ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-                            : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
-                        {
-                            attribution: "&copy; <a href='https://carto.com/attributions'>CARTO</a>",
-                        }
-                    ),
-                ],
-            });
+            const L = LRef.current;
 
-            // Agregar marcadores al mapa
-            travelRoute.forEach((location) => {
-                L.marker(location.coords as LatLngTuple, {
-                    icon: (L as any).AwesomeMarkers.icon({
-                        icon: "map-marker-alt",
-                        markerColor: "blue",
-                        prefix: "fa",
-                        iconColor: "white",
-                    }),
-                })
-                    .bindPopup(
-                        `<b>${location.name}</b><br><img src="${location.img}" style="width:100px; height:auto;">`
-                    )
-                    .addTo(map);
-            });
+            if (!mapRef.current) {
+                mapRef.current = L.map(mapContainerRef.current!, {
+                    center: [-20.0, -60.0],
+                    zoom: 4,
+                });
 
-            // Guardar la instancia del mapa
-            setMapInstance(map);
+                tileLayerRef.current = L.tileLayer(
+                    isDark
+                        ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                        : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                    {
+                        attribution: "&copy; <a href='https://carto.com/attributions'>CARTO</a>",
+                    }
+                ).addTo(mapRef.current);
+
+                travelRoute.forEach((location) => {
+                    L.marker(location.coords as LatLngTuple, {
+                        icon: (L as any).AwesomeMarkers.icon({
+                            icon: "map-marker-alt",
+                            markerColor: "blue",
+                            prefix: "fa",
+                            iconColor: "white",
+                        }),
+                    })
+                        .bindPopup(
+                            `<b>${location.name}</b><br><img src="${location.img}" style="width:100px; height:auto;">`
+                        )
+                        .addTo(mapRef.current);
+                });
+            }
         };
 
-        initializeMap(); // Inicializar el mapa
+        initializeMap();
 
-        // Limpiar el mapa al desmontar el componente
         return () => {
-            if (map) {
-                map.remove();
+            if (mapRef.current) {
+                mapRef.current.remove();
+                mapRef.current = null;
             }
         };
-    }, [isDark]); // Recalcular el mapa si cambia el tema
+    }, []);
+
+    useEffect(() => {
+        if (tileLayerRef.current) {
+            const newUrl = isDark
+                ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
+            tileLayerRef.current.setUrl(newUrl);
+        }
+    }, [isDark]);
 
     return (
         <section id="travel" className="py-12 bg-gray-100 dark:bg-gray-900">
             <div className="max-w-5xl mx-auto px-4">
                 <h2 className="text-3xl font-bold text-center mb-8">Lugares que he Visitado</h2>
-                <div ref={mapRef} style={{ height: "500px", width: "100%" }}></div>
+                <div
+                    ref={mapContainerRef}
+                    className={styles["map-container"]} // Aplica el estilo personalizado
+                ></div>
             </div>
         </section>
     );
