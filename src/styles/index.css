@@ -1,0 +1,133 @@
+/* src/index.css */
+
+/* Directivas de Tailwind CSS */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Estilos personalizados */
+:root {
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #FFFFFF;
+  /* Fondo claro por defecto */
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Modo oscuro */
+.dark {
+  background-color: #111827;
+  /* Gris Muy Oscuro */
+  color: #F3F4F6;
+  /* Texto en Fondo Oscuro */
+}
+
+body {
+  margin: 0;
+  /* Elimina las siguientes líneas si ya estás manejando flex en App.jsx */
+  /* display: flex;
+  flex-direction: column; */
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: white;
+  color: #374151;
+  /* gray dark */
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.dark body {
+  background-color: #111827;
+  /* gris muy oscuro */
+  color: #F3F4F6;
+  /* texto en fondo oscuro */
+}
+
+/* Enlaces */
+a {
+  font-weight: 500;
+  color: #3B82F6;
+  /* Azul Medio */
+  text-decoration: none;
+}
+
+a:hover {
+  color: #60A5FA;
+  /* Azul Claro */
+  text-decoration: underline;
+}
+
+/* Botones */
+button {
+  border-radius: 0.5rem;
+  border: 1px solid transparent;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  background-color: #3B82F6;
+  /* Azul Medio */
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.25s;
+}
+
+button:hover {
+  background-color: #1E3A8A;
+  /* Azul Oscuro */
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+/* Modo claro y oscuro */
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #374151;
+    /* gray dark */
+    background-color: #FFFFFF;
+    /* white */
+  }
+
+  a:hover {
+    color: #60A5FA;
+    /* primary light */
+  }
+
+  button {
+    background-color: #3B82F6;
+    /* primary DEFAULT */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: #F3F4F6;
+    /* gray light */
+    background-color: #111827;
+    /* gray very dark */
+  }
+
+  a:hover {
+    color: #60A5FA;
+    /* primary light */
+  }
+
+  button {
+    background-color: #3B82F6;
+    /* primary DEFAULT */
+  }
+}
+
+/* Transiciones globales */
+* {
+  transition: background-color 0.3s, color 0.3s;
+}
