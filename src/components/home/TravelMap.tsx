@@ -1,40 +1,14 @@
 "use client";
 
-import React, { useEffect, useState, useMemo } from "react";
-import dynamic from "next/dynamic";
-import "leaflet.awesome-markers/dist/leaflet.awesome-markers.css";
+import React, { useEffect, useRef, useState } from "react";
 import "leaflet/dist/leaflet.css";
+import "leaflet.awesome-markers/dist/leaflet.awesome-markers.css";
 import "@fortawesome/fontawesome-free/css/all.css";
-import Image from "next/image";
 import { useTheme } from "@/context/ThemeContext";
-import styles from "./TravelMap.module.css";
 import { LatLngTuple } from "leaflet";
 
-// Importación dinámica de los componentes de react-leaflet
-const MapContainer = dynamic(
-    () => import("react-leaflet").then((mod) => mod.MapContainer),
-    { ssr: false }
-);
-const TileLayer = dynamic(
-    () => import("react-leaflet").then((mod) => mod.TileLayer),
-    { ssr: false }
-);
-const Marker = dynamic(
-    () => import("react-leaflet").then((mod) => mod.Marker),
-    { ssr: false }
-);
-const Tooltip = dynamic(
-    () => import("react-leaflet").then((mod) => mod.Tooltip),
-    { ssr: false }
-);
 
-type TravelLocation = {
-    name: string;
-    coords: LatLngTuple; // Aseguramos que sea un array de exactamente 2 números
-    img: string;
-};
-
-const travelRoute: TravelLocation[] = [
+const travelRoute = [
     { name: 'Quito', coords: [-0.1807, -78.4678], img: 'https://res.cloudinary.com/dltfsttr7/image/upload/v1731947461/Quito_gag520.jpg' },
     { name: 'Cuenca', coords: [-2.9006, -79.0045], img: 'https://res.cloudinary.com/dltfsttr7/image/upload/v1731947486/Cuenca_i5hdbb.jpg' },
     { name: 'Cajamarca', coords: [-7.1617, -78.5127], img: 'https://res.cloudinary.com/dltfsttr7/image/upload/v1731947491/Cajamarca_zogcqe.jpg' },
@@ -77,98 +51,75 @@ const travelRoute: TravelLocation[] = [
 
 function TravelMap() {
     const { isDark } = useTheme();
-    const [L, setL] = useState<any>(null);
+    const mapRef = useRef<HTMLDivElement>(null); // Referencia al contenedor del mapa
+    const [mapInstance, setMapInstance] = useState<any>(null); // Instancia del mapa
 
     useEffect(() => {
-        // Importamos Leaflet y leaflet.awesome-markers dinámicamente
-        (async () => {
-            const { default: leaflet } = await import("leaflet");
-            (window as any).L = leaflet; // Asignamos Leaflet a window.L
+        let map: any = null;
+
+        const initializeMap = async () => {
+            const { default: L } = await import("leaflet");
+            (window as any).L = L; // Asignamos L a window.L para que sea accesible globalmente
+
             await import("leaflet.awesome-markers");
-            setL(leaflet);
-        })();
-    }, []);
 
-    // Icono personalizado (Memoizado para evitar re-renderizados innecesarios)
-    const createCustomIcon = useMemo(() => {
-        if (!L) return null;
+            // Si ya hay una instancia previa, elimínala
+            if (mapInstance) {
+                mapInstance.remove();
+                setMapInstance(null);
+            }
 
-        return (color: string, icon: string): L.Icon => {
-            return (L as any).AwesomeMarkers.icon({
-                icon: icon,
-                markerColor: color,
-                prefix: "fa",
-                iconColor: "white",
+            // Crear la instancia del mapa
+            map = L.map(mapRef.current!, {
+                center: [-20.0, -60.0],
+                zoom: 4,
+                layers: [
+                    L.tileLayer(
+                        isDark
+                            ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                            : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                        {
+                            attribution: "&copy; <a href='https://carto.com/attributions'>CARTO</a>",
+                        }
+                    ),
+                ],
             });
+
+            // Agregar marcadores al mapa
+            travelRoute.forEach((location) => {
+                L.marker(location.coords as LatLngTuple, {
+                    icon: (L as any).AwesomeMarkers.icon({
+                        icon: "map-marker-alt",
+                        markerColor: "blue",
+                        prefix: "fa",
+                        iconColor: "white",
+                    }),
+                })
+                    .bindPopup(
+                        `<b>${location.name}</b><br><img src="${location.img}" style="width:100px; height:auto;">`
+                    )
+                    .addTo(map);
+            });
+
+            // Guardar la instancia del mapa
+            setMapInstance(map);
         };
-    }, [L]);
 
-    // URL para el TileLayer según el tema
-    const tileLayerUrl = useMemo(() => {
-        return isDark
-            ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-            : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
-    }, [isDark]);
+        initializeMap(); // Inicializar el mapa
 
-    // Mapa memoizado
-    const map = useMemo(() => {
-        if (!L || !createCustomIcon) return null;
-
-        return (
-            <MapContainer
-                center={[-20.0, -60.0]} // Centro del mapa
-                zoom={3}
-                scrollWheelZoom={false}
-                className={styles["map-container"]}
-                id="unique-map-container"
-            >
-                <TileLayer
-                    key={tileLayerUrl} // Cambia si cambia el tema
-                    url={tileLayerUrl}
-                    attribution="&copy; <a href='https://carto.com/attributions'>CARTO</a>"
-                />
-                {travelRoute.map((location, index) => (
-                    <Marker
-                        key={index}
-                        position={location.coords}
-                        icon={createCustomIcon("blue", "map-marker-alt")}
-                    >
-                        <Tooltip
-                            offset={[0, -20]}
-                            opacity={1}
-                            className={styles["leaflet-tooltip"]}
-                            permanent={false}
-                        >
-                            <div className="rounded-full w-32 h-32 overflow-hidden shadow-md">
-                                {location.img && (
-                                    <Image
-                                        src={location.img}
-                                        alt={location.name}
-                                        width={128}
-                                        height={128}
-                                        className="object-cover rounded-full"
-                                    />
-                                )}
-                            </div>
-                        </Tooltip>
-                    </Marker>
-                ))}
-            </MapContainer>
-        );
-    }, [L, createCustomIcon, tileLayerUrl]);
-
-    if (!L) {
-        // Muestra un loader mientras Leaflet se carga
-        return <p>Loading map...</p>;
-    }
+        // Limpiar el mapa al desmontar el componente
+        return () => {
+            if (map) {
+                map.remove();
+            }
+        };
+    }, [isDark]); // Recalcular el mapa si cambia el tema
 
     return (
         <section id="travel" className="py-12 bg-gray-100 dark:bg-gray-900">
             <div className="max-w-5xl mx-auto px-4">
-                <h2 className="text-3xl font-bold text-center mb-8">
-                    Lugares que he Visitado
-                </h2>
-                {map}
+                <h2 className="text-3xl font-bold text-center mb-8">Lugares que he Visitado</h2>
+                <div ref={mapRef} style={{ height: "500px", width: "100%" }}></div>
             </div>
         </section>
     );
