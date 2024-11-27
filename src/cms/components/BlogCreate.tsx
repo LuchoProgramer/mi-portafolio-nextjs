@@ -4,6 +4,7 @@ import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
 import RichTextEditor from "../RichTextEditor"; // Asegúrate de que el componente exista
 import { uploadImageToCloudinary } from "../../utils/cloudinary"; // Para manejar imágenes
 import { generateSlug } from "../../utils/slugGenerator"; // Importa tu generador de slugs
+import { parseVideoUrl } from "../../utils/videoUtils"; // Importa la utilidad de URLs de video
 import dynamic from "next/dynamic";
 
 // Carga dinámica para componentes no compatibles con SSR
@@ -34,7 +35,12 @@ const BlogCreate: React.FC = () => {
 
     // Agregar un bloque de video
     const handleAddVideo = (url: string) => {
-        setBlocks([...blocks, { type: "video", src: url }]);
+        const parsedUrl = parseVideoUrl(url);
+        if (parsedUrl) {
+            setBlocks([...blocks, { type: "video", src: parsedUrl }]);
+        } else {
+            alert("La URL proporcionada no es válida o no es compatible.");
+        }
     };
 
     // Actualizar un bloque
