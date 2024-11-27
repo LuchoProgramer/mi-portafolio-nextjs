@@ -13,14 +13,9 @@ import {
     Timestamp,
 } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { Blog } from '../types';
 
 // Tipos para blog (puedes extenderlo según tus necesidades)
-interface Blog {
-    id?: string;
-    title: string;
-    content: string;
-    createdAt?: Timestamp;
-}
 
 // Configuración de Firebase
 const firebaseConfig = {
@@ -74,7 +69,11 @@ export const getBlogs = async (limitNumber = 10): Promise<Blog[]> => {
                 id: doc.id, // Firebase siempre proporciona `doc.id`
                 title: data.title || "Sin título",
                 content: data.content || "Contenido no disponible",
-                createdAt: data.createdAt ? data.createdAt.toDate() : null, // Convierte Timestamp a Date
+                createdAt: data.createdAt ? data.createdAt.toDate() : null, // Convierte `Timestamp` a `Date`
+                slug: data.slug || data.title.toLowerCase().replace(/ /g, "-") || doc.id, // Genera un slug si no está presente
+                image: data.image || null, // Opcional
+                alt: data.alt || "Imagen del blog", // Opcional
+                excerpt: data.excerpt || data.content?.substring(0, 150) || "No hay descripción disponible.", // Opcional
             });
         });
 
@@ -84,7 +83,6 @@ export const getBlogs = async (limitNumber = 10): Promise<Blog[]> => {
         throw new Error("No se pudieron cargar los blogs.");
     }
 };
-
 
 // Función para actualizar un blog
 export const updateBlog = async (
