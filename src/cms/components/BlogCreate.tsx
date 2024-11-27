@@ -34,8 +34,8 @@ const BlogCreate: React.FC = () => {
     };
 
     // Agregar un bloque de video
-    const handleAddVideo = (url: string) => {
-        const parsedUrl = parseVideoUrl(url);
+    const handleAddVideo = async (url: string) => {
+        const parsedUrl = await parseVideoUrl(url);
         if (parsedUrl) {
             setBlocks([...blocks, { type: "video", src: parsedUrl }]);
         } else {
