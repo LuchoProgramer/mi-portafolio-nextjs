@@ -35,13 +35,19 @@ const BlogCreate: React.FC = () => {
 
     // Agregar un bloque de video
     const handleAddVideo = async (url: string) => {
-        const parsedUrl = await parseVideoUrl(url);
-        if (parsedUrl) {
-            setBlocks([...blocks, { type: "video", src: parsedUrl }]);
-        } else {
-            alert("La URL proporcionada no es válida o no es compatible.");
+        try {
+            const parsedUrl = await parseVideoUrl(url);
+            if (parsedUrl) {
+                setBlocks([...blocks, { type: "video", src: parsedUrl }]);
+            } else {
+                alert("La URL proporcionada no es válida o no es compatible.");
+            }
+        } catch (error) {
+            console.error("Error procesando la URL del video:", error);
+            alert("Ocurrió un error al procesar la URL del video.");
         }
     };
+
 
     // Actualizar un bloque
     const handleBlockChange = (index: number, updatedBlock: any) => {
