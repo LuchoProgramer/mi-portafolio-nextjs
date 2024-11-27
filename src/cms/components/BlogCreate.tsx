@@ -143,7 +143,7 @@ const BlogCreate: React.FC = () => {
                     {blocks.map((block, index) => (
                         <div
                             key={index}
-                            className="relative p-8 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-700"
+                            className="relative p-8 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-700 w-full h-[315px]"
                         >
                             <button
                                 type="button"

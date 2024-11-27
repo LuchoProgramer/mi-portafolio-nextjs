@@ -67,15 +67,24 @@ export const getBlogs = async (limitNumber = 10): Promise<Blog[]> => {
             limit(limitNumber)
         );
         const querySnapshot = await getDocs(blogsQuery);
+
         querySnapshot.forEach((doc) => {
-            blogs.push({ id: doc.id, ...(doc.data() as Blog) });
+            const data = doc.data();
+            blogs.push({
+                id: doc.id, // Firebase siempre proporciona `doc.id`
+                title: data.title || "Sin título",
+                content: data.content || "Contenido no disponible",
+                createdAt: data.createdAt ? data.createdAt.toDate() : null, // Convierte Timestamp a Date
+            });
         });
+
         return blogs;
     } catch (error) {
         console.error("Error al obtener los blogs: ", error);
         throw new Error("No se pudieron cargar los blogs.");
     }
 };
+
 
 // Función para actualizar un blog
 export const updateBlog = async (
