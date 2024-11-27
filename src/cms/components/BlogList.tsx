@@ -90,7 +90,7 @@ const BlogList: React.FC = () => {
                                 </td>
                                 <td className="px-4 py-2 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
                                     <button
-                                        onClick={() => router.push(`/cms/edit/${blog.id}`)}
+                                        onClick={() => router.push(`/cms/blogs/edit/${blog.id}`)} // Ruta ajustada
                                         className="flex items-center space-x-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 text-xs md:text-sm rounded"
                                     >
                                         <AiOutlineEdit size={16} />
@@ -130,7 +130,7 @@ const BlogList: React.FC = () => {
                         </div>
                         <div className="flex space-x-2 mt-4">
                             <button
-                                onClick={() => router.push(`/cms/edit/${blog.id}`)}
+                                onClick={() => router.push(`/cms/blogs/edit/${blog.id}`)} // Ruta ajustada
                                 className="flex items-center space-x-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 text-xs rounded"
                             >
                                 <AiOutlineEdit size={16} />
