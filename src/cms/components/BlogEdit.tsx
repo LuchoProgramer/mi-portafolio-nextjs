@@ -132,7 +132,7 @@ const BlogEdit = ({ params }: { params: { id: string } }) => {
                             <button
                                 type="button"
                                 onClick={() => handleRemoveBlock(index)}
-                                className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
+                                className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs z-10"
                             >
                                 X
                             </button>
