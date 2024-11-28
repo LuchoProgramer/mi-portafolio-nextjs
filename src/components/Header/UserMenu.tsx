@@ -69,7 +69,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user, role }) => {
                             <>
                                 <li>
                                     <Link
-                                        href="/cms"
+                                        href="/cms/blogs/dashboard"
                                         className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700"
                                         onClick={() => setMenuOpen(false)}
                                     >

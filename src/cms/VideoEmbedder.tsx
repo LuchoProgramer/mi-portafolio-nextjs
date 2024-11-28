@@ -8,9 +8,11 @@ const VideoEmbedder: React.FC<VideoEmbedderProps> = ({ onEmbed }) => {
     const [videoUrl, setVideoUrl] = useState<string>("");
 
     const handleEmbed = () => {
-        if (videoUrl) {
-            onEmbed(videoUrl); // Notificar al padre la URL del video
+        if (videoUrl.trim()) {
+            onEmbed(videoUrl.trim()); // Notificar al padre con la URL
             setVideoUrl(""); // Limpiar el campo después de enviar
+        } else {
+            alert("Por favor, introduce una URL válida.");
         }
     };
 
@@ -27,6 +29,7 @@ const VideoEmbedder: React.FC<VideoEmbedderProps> = ({ onEmbed }) => {
                 className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary mb-2"
             />
             <button
+                type="button"
                 onClick={handleEmbed}
                 className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition"
             >
