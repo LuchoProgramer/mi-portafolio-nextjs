@@ -129,44 +129,71 @@ const BlogCreate: React.FC = () => {
                     {blocks.map((block, index) => (
                         <div
                             key={index}
-                            className="relative p-8 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-700 w-full"
+                            className="relative border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-700 w-full"
                         >
+                            {/* Botón para eliminar el bloque */}
                             <button
                                 type="button"
                                 onClick={() => handleRemoveBlock(index)}
-                                className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs z-10"
+                                className="absolute top-0 right-0 m-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs z-10"
                             >
                                 X
                             </button>
-                            {block.type === "text" && (
-                                <div className="w-full">
-                                    <RichTextEditor
-                                        value={block.content}
-                                        onChange={(content) => handleBlockChange(index, { ...block, content })}
+
+                            {/* Contenido del bloque con padding */}
+                            <div className="p-4">
+                                {block.type === "text" && (
+                                    <div className="w-full">
+                                        <RichTextEditor
+                                            value={block.content}
+                                            onChange={(content) => handleBlockChange(index, { ...block, content })}
+                                        />
+                                    </div>
+                                )}
+                                {block.type === "image" && (
+                                    <img
+                                        src={block.src}
+                                        alt={block.alt || "Imagen"}
+                                        className="max-w-full h-40 object-contain rounded"
                                     />
-                                </div>
-                            )}
-                            {block.type === "image" && (
-                                <img src={block.src} alt={block.alt || "Imagen"} className="max-w-full h-auto rounded" />
-                            )}
-                            {block.type === "video" && (
-                                <iframe src={block.src} className="w-full h-auto rounded" allowFullScreen title={`Video ${index}`} />
-                            )}
+                                )}
+                                {block.type === "video" && (
+                                    <iframe
+                                        src={block.src}
+                                        className="w-full h-40 rounded"
+                                        allowFullScreen
+                                        title={`Video ${index}`}
+                                    />
+                                )}
+                            </div>
                         </div>
                     ))}
                 </div>
 
-                <div className="mt-6 flex gap-4">
-                    <button type="button" onClick={handleAddText} className="px-4 py-2 bg-blue-500 text-white rounded-md">
-                        Agregar Texto
-                    </button>
-                    <ImageUploader
-                        onUpload={(url: string) => {
-                            const alt = prompt("Describe brevemente la imagen:") || "Imagen relacionada con el blog";
-                            setBlocks((prevBlocks) => [...prevBlocks, { type: "image", src: url, alt }]);
-                        }}
-                    />
-                    <VideoEmbedder onEmbed={handleAddVideo} />
+                {/* Contenedor de los botones */}
+                <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-between">
+                    <div className="flex-1 flex flex-col justify-between items-center">
+                        {/* Contenedor vacío para alinear el botón con otros */}
+                        <div className="h-10 w-full bg-transparent"></div>
+                        <button
+                            type="button"
+                            onClick={handleAddText}
+                            className="w-full px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 text-center"
+                        >
+                            Agregar Texto
+                        </button>
+                    </div>
+                    <div className="flex-1">
+                        <ImageUploader
+                            onUpload={(url: string) => {
+                                const alt = prompt("Describe brevemente la imagen:") || "Imagen relacionada con el blog";
+                                setBlocks((prevBlocks) => [...prevBlocks, { type: "image", src: url, alt }]);
+                            }}
+                        />
+                    </div>
+                    <div className="flex-1">
+                        <VideoEmbedder onEmbed={handleAddVideo} />
+                    </div>
                 </div>
 
                 <button

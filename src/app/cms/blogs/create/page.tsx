@@ -7,7 +7,7 @@ const BlogCreatePage: React.FC = () => {
     return (
         <div className="py-12 max-w-4xl mx-auto">
             <h1 className="text-3xl font-bold mb-6 text-gray-800 dark:text-white text-center">
-                Crear Nuevo Blog
+
             </h1>
             <BlogCreate />
         </div>
