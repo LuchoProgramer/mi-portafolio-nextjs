@@ -10,9 +10,16 @@ import dynamic from "next/dynamic";
 const ImageUploader = dynamic(() => import("../ImageUploader"), { ssr: false });
 const VideoEmbedder = dynamic(() => import("../VideoEmbedder"), { ssr: false });
 
+interface Block {
+    type: "text" | "image" | "video";
+    content?: string;
+    src?: string;
+    alt?: string;
+}
+
 const BlogCreate: React.FC = () => {
     const [title, setTitle] = useState<string>("");
-    const [blocks, setBlocks] = useState<any[]>([]);
+    const [blocks, setBlocks] = useState<Block[]>([]);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
 
@@ -20,15 +27,6 @@ const BlogCreate: React.FC = () => {
         setBlocks([...blocks, { type: "text", content: "" }]);
     };
 
-    const handleAddImage = async (file: File) => {
-        try {
-            const url = await uploadImageToCloudinary(file);
-            const alt = prompt("Describe brevemente la imagen:") || "Imagen relacionada con el blog";
-            setBlocks([...blocks, { type: "image", src: url, alt }]);
-        } catch (error: any) {
-            console.error("Error al subir la imagen:", error.message);
-        }
-    };
 
     const handleAddVideo = async (url: string) => {
         try {
@@ -44,7 +42,7 @@ const BlogCreate: React.FC = () => {
         }
     };
 
-    const handleBlockChange = (index: number, updatedBlock: any) => {
+    const handleBlockChange = (index: number, updatedBlock: Block) => {
         const updatedBlocks = [...blocks];
         updatedBlocks[index] = updatedBlock;
         setBlocks(updatedBlocks);
@@ -97,9 +95,13 @@ const BlogCreate: React.FC = () => {
             alert("Blog creado exitosamente");
             setTitle("");
             setBlocks([]);
-        } catch (err: any) {
-            console.error("Error al crear el blog:", err.message);
-            setError(`Hubo un error al crear el blog: ${err.message}`);
+        } catch (err: unknown) {
+            console.error("Error al crear el blog:", err);
+            if (err instanceof Error) {
+                setError(`Hubo un error al crear el blog: ${err.message}`);
+            } else {
+                setError("Hubo un error al crear el blog.");
+            }
         } finally {
             setIsSubmitting(false);
         }
@@ -145,21 +147,21 @@ const BlogCreate: React.FC = () => {
                                 {block.type === "text" && (
                                     <div className="w-full">
                                         <RichTextEditor
-                                            value={block.content}
+                                            value={block.content || ""} // Asegúrate de que block.content no sea undefined
                                             onChange={(content) => handleBlockChange(index, { ...block, content })}
                                         />
                                     </div>
                                 )}
                                 {block.type === "image" && (
                                     <img
-                                        src={block.src}
+                                        src={block.src || ""} // Asegúrate de que block.src no sea undefined
                                         alt={block.alt || "Imagen"}
                                         className="max-w-full h-40 object-contain rounded"
                                     />
                                 )}
                                 {block.type === "video" && (
                                     <iframe
-                                        src={block.src}
+                                        src={block.src || ""} // Asegúrate de que block.src no sea undefined
                                         className="w-full h-40 rounded"
                                         allowFullScreen
                                         title={`Video ${index}`}

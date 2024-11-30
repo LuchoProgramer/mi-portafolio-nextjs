@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useEffect } from "react"; // Importa useRef y useEffect
 import Link from "next/link";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/lib/firebase";
@@ -30,6 +30,21 @@ const Header = () => {
     } = useModal();
 
     const { isOpen, toggleMenu, closeMenu } = useNavigationMenu();
+    const menuRef = useRef<HTMLDivElement>(null); // Agrega una ref al elemento del menú
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (isOpen && menuRef.current && !menuRef.current.contains(event.target as Node)) {
+                closeMenu();
+            }
+        };
+
+        // Agrega el event listener cuando el componente se monta
+        document.addEventListener('mousedown', handleClickOutside);
+
+        // Remueve el event listener cuando el componente se desmonta
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [isOpen, closeMenu, menuRef]); // Agrega las dependencias del useEffect
 
     return (
         <header className="bg-primary-dark text-white p-4 fixed w-full z-20 shadow-lg">
@@ -47,11 +62,13 @@ const Header = () => {
                 {/* Contenedor del menú y opciones de usuario */}
                 <div className="flex items-center space-x-4">
                     {/* Menú de Navegación */}
-                    <NavigationMenu
-                        isOpen={isOpen}
-                        toggleMenu={toggleMenu}
-                        user={user != null} // Cambiado a un booleano indicando si hay un usuario autenticado.
-                    />
+                    <div ref={menuRef}> {/* Asigna la ref al elemento del menú */}
+                        <NavigationMenu
+                            isOpen={isOpen}
+                            toggleMenu={toggleMenu}
+                            user={user != null}
+                        />
+                    </div>
 
                     {/* Toggle Dark Mode */}
                     <ToggleDarkMode />

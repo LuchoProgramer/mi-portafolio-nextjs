@@ -1,8 +1,10 @@
+import React from 'react';
 import { Metadata } from "next";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import { db } from "@/lib/firebase"; // Ajusta según tu configuración
-import { Blog } from "@/types"; // Asegúrate de que Blog incluya blocks
+import { db } from "@/lib/firebase";
+import { Blog } from "@/types";
 import Comments from "@/components/blogs/Comments";
+
 
 interface BlogDetailProps {
     params: { slug: string };
@@ -45,7 +47,7 @@ const getBlogBySlug = async (slug: string): Promise<Blog | null> => {
             const blogDoc = querySnapshot.docs[0];
             const data = blogDoc.data() as Blog;
 
-            return { ...data, id: blogDoc.id }; // Reordenar para evitar sobrescritura
+            return { ...data, id: blogDoc.id };
         }
 
         return null;
@@ -72,7 +74,7 @@ const BlogDetail = async ({ params }: BlogDetailProps) => {
             <h2 className="text-3xl font-bold mb-6 text-center text-gray-800 dark:text-gray-200">
                 {blog.title}
             </h2>
-            {/* Renderizar bloques dinámicamente */}
+
             <div className="space-y-6">
                 {blog.blocks.map((block, index) => {
                     if (block.type === "text") {
@@ -87,30 +89,34 @@ const BlogDetail = async ({ params }: BlogDetailProps) => {
                     if (block.type === "image") {
                         return (
                             <div key={index} className="flex justify-center">
-                                <img
-                                    src={block.src}
-                                    alt={block.alt || `Imagen del blog ${index}`}
-                                    className="rounded-lg shadow-md"
-                                />
+                                {block.src && ( // Verifica si block.src existe
+                                    <img
+                                        src={block.src}
+                                        alt={block.alt || `Imagen del blog ${index}`}
+                                        className="rounded-lg shadow-md"
+                                    />
+                                )}
                             </div>
                         );
                     }
                     if (block.type === "video") {
                         return (
                             <div key={index} className="relative" style={{ paddingTop: "56.25%" }}>
-                                <iframe
-                                    src={block.src}
-                                    title={`Video ${index}`}
-                                    className="absolute top-0 left-0 w-full h-full rounded-lg"
-                                    allowFullScreen
-                                ></iframe>
+                                {block.src && ( // Verifica si block.src existe
+                                    <iframe
+                                        src={block.src}
+                                        title={`Video ${index}`}
+                                        className="absolute top-0 left-0 w-full h-full rounded-lg"
+                                        allowFullScreen
+                                    ></iframe>
+                                )}
                             </div>
                         );
                     }
                     return null;
                 })}
             </div>
-            {/* Componente de Comentarios */}
+
             <Comments blogId={blog.id} />
         </div>
     );

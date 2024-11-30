@@ -9,13 +9,19 @@ import ImageUploader from "@/cms/ImageUploader";
 import VideoEmbedder from "@/cms/VideoEmbedder";
 import { uploadImageToCloudinary } from "@/utils/cloudinary";
 
+interface Block {
+    type: "text" | "image" | "video";
+    content?: string;
+    src?: string;
+    alt?: string;
+}
 
 const BlogEdit = ({ params }: { params: { id: string } }) => {
     const router = useRouter();
     const { id } = params;
 
     const [title, setTitle] = useState<string>("");
-    const [blocks, setBlocks] = useState<any[]>([]);
+    const [blocks, setBlocks] = useState<Block[]>([]);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
 
@@ -30,49 +36,52 @@ const BlogEdit = ({ params }: { params: { id: string } }) => {
                 } else {
                     setError("El blog no existe.");
                 }
-            } catch (err) {
+            } catch (err: unknown) {
                 console.error("Error al cargar el blog:", err);
-                setError("Error al cargar el blog.");
+                if (err instanceof Error) {
+                    setError(err.message);
+                } else {
+                    setError("Error al cargar el blog.");
+                }
             }
         };
 
         fetchBlog();
     }, [id]);
 
-    // Agregar un bloque de texto
     const handleAddText = () => {
         setBlocks([...blocks, { type: "text", content: "" }]);
     };
 
-    // Agregar un bloque de imagen
     const handleAddImage = async (file: File) => {
         try {
             const url = await uploadImageToCloudinary(file);
             const alt = prompt("Describe brevemente la imagen:") || "Imagen relacionada con el blog";
             setBlocks([...blocks, { type: "image", src: url, alt }]);
-        } catch (error: any) {
-            console.error("Error al subir la imagen:", error.message);
+        } catch (error: unknown) {
+            console.error("Error al subir la imagen:", error);
+            if (error instanceof Error) {
+                setError(error.message);
+            } else {
+                setError("Ocurrió un error al subir la imagen.");
+            }
         }
     };
 
-    // Agregar un bloque de video
     const handleAddVideo = (url: string) => {
         setBlocks([...blocks, { type: "video", src: url }]);
     };
 
-    // Actualizar un bloque
-    const handleBlockChange = (index: number, updatedBlock: any) => {
+    const handleBlockChange = (index: number, updatedBlock: Block) => {
         const updatedBlocks = [...blocks];
         updatedBlocks[index] = updatedBlock;
         setBlocks(updatedBlocks);
     };
 
-    // Eliminar un bloque
     const handleRemoveBlock = (index: number) => {
         setBlocks(blocks.filter((_, i) => i !== index));
     };
 
-    // Guardar cambios en Firestore
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -93,9 +102,13 @@ const BlogEdit = ({ params }: { params: { id: string } }) => {
 
             alert("Blog actualizado exitosamente");
             router.push(`/blog/${id}`);
-        } catch (err: any) {
-            console.error("Error al actualizar el blog:", err.message);
-            setError(`Hubo un error al actualizar el blog: ${err.message}`);
+        } catch (err: unknown) {
+            console.error("Error al actualizar el blog:", err);
+            if (err instanceof Error) {
+                setError(`Hubo un error al actualizar el blog: ${err.message}`);
+            } else {
+                setError("Hubo un error al actualizar el blog.");
+            }
         } finally {
             setIsSubmitting(false);
         }
@@ -106,7 +119,6 @@ const BlogEdit = ({ params }: { params: { id: string } }) => {
             <h2 className="text-3xl font-bold mb-6 text-center text-gray-800 dark:text-white">Editar Blog</h2>
             {error && <div className="mb-4 text-red-500 text-center">{error}</div>}
             <form onSubmit={handleSubmit}>
-                {/* Campo de título */}
                 <div className="mb-6">
                     <label htmlFor="title" className="block text-gray-700 dark:text-gray-200 font-semibold mb-2">
                         Título
@@ -122,7 +134,6 @@ const BlogEdit = ({ params }: { params: { id: string } }) => {
                     />
                 </div>
 
-                {/* Lista de bloques */}
                 <div className="mb-6 space-y-4">
                     {blocks.map((block, index) => (
                         <div
@@ -138,13 +149,13 @@ const BlogEdit = ({ params }: { params: { id: string } }) => {
                             </button>
                             {block.type === "text" && (
                                 <RichTextEditor
-                                    value={block.content}
+                                    value={block.content || ""}
                                     onChange={(content) => handleBlockChange(index, { ...block, content })}
                                 />
                             )}
                             {block.type === "image" && (
                                 <div>
-                                    <img src={block.src} alt={block.alt || "Imagen"} className="max-w-full h-auto rounded" />
+                                    <img src={block.src || ""} alt={block.alt || "Imagen"} className="max-w-full h-auto rounded" />
                                     <input
                                         type="text"
                                         value={block.alt || ""}
@@ -157,13 +168,12 @@ const BlogEdit = ({ params }: { params: { id: string } }) => {
                                 </div>
                             )}
                             {block.type === "video" && (
-                                <iframe src={block.src} className="w-full h-auto rounded" allowFullScreen title={`Video ${index}`} />
+                                <iframe src={block.src || ""} className="w-full h-auto rounded" allowFullScreen title={`Video ${index}`} />
                             )}
                         </div>
                     ))}
                 </div>
 
-                {/* Botones para agregar bloques */}
                 <div className="mt-6 flex gap-4">
                     <button type="button" onClick={handleAddText} className="px-4 py-2 bg-blue-500 text-white rounded-md">
                         Agregar Texto
@@ -177,7 +187,6 @@ const BlogEdit = ({ params }: { params: { id: string } }) => {
                     <VideoEmbedder onEmbed={handleAddVideo} />
                 </div>
 
-                {/* Botón de guardar */}
                 <button
                     type="submit"
                     disabled={isSubmitting}

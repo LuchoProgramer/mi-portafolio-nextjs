@@ -13,7 +13,13 @@ const Blogs: React.FC = () => {
         const fetchBlogs = async () => {
             try {
                 const blogsList = await getBlogs();
-                setBlogs(blogsList);
+                // Ajustar la propiedad image para evitar null
+                const blogsWithImage = blogsList.map(blog => ({
+                    ...blog,
+                    image: blog.image || undefined, // Reemplazar null con undefined
+                    alt: blog.alt || undefined // Asegurar que alt no sea null
+                }));
+                setBlogs(blogsWithImage);
             } catch (error) {
                 console.error('Error al cargar los blogs:', error);
             } finally {

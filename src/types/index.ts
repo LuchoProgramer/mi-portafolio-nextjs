@@ -11,7 +11,7 @@ export interface Blog {
     content: string; // Contenido del blog (obligatorio)
     createdAt: Date | null; // Fecha de creación (puede ser nula)
     slug: string; // Slug (obligatorio)
-    image?: string; // URL de la imagen asociada al blog (opcional)
+    image?: string | null;
     alt?: string; // Texto alternativo para la imagen (opcional)
     excerpt?: string; // Resumen o extracto del contenido (opcional)
     blocks: BlogBlock[]; // Array de bloques de contenido

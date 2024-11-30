@@ -47,9 +47,13 @@ const SignIn: React.FC<SignInProps> = ({ onSuccess, switchToSignUp }) => {
             }
 
             onSuccess(); // Notificar éxito
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Error al iniciar sesión:", error);
-            setError(error.message || "Ocurrió un error inesperado.");
+            if (error instanceof Error) {
+                setError(error.message);
+            } else {
+                setError("Ocurrió un error inesperado.");
+            }
         } finally {
             setLoading(false);
         }
@@ -76,9 +80,13 @@ const SignIn: React.FC<SignInProps> = ({ onSuccess, switchToSignUp }) => {
             }
 
             onSuccess(); // Notificar éxito
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Error al iniciar sesión con Google:", error);
-            setError(error.message || "Ocurrió un error inesperado.");
+            if (error instanceof Error) {
+                setError(error.message);
+            } else {
+                setError("Ocurrió un error inesperado.");
+            }
         } finally {
             setLoading(false);
         }

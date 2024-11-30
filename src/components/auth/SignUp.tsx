@@ -61,9 +61,13 @@ const SignUp: React.FC<SignUpProps> = ({ onSuccess, switchToSignIn }) => {
 
             alert("Registro exitoso.");
             onSuccess(); // Notificar éxito
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Error al registrar:", error);
-            setError(error.message || "Ocurrió un error inesperado.");
+            if (error instanceof Error) {
+                setError(error.message);
+            } else {
+                setError("Ocurrió un error inesperado.");
+            }
         } finally {
             setLoading(false);
         }
@@ -93,9 +97,13 @@ const SignUp: React.FC<SignUpProps> = ({ onSuccess, switchToSignIn }) => {
             }
 
             onSuccess(); // Notificar éxito
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Error al registrarse con Google:", error);
-            setError(error.message || "Ocurrió un error inesperado.");
+            if (error instanceof Error) {
+                setError(error.message);
+            } else {
+                setError("Ocurrió un error inesperado.");
+            }
         } finally {
             setLoading(false);
         }

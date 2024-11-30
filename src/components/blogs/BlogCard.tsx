@@ -1,3 +1,7 @@
+"use client";
+
+import React from "react";
+import PropTypes from 'prop-types';
 import { Blog } from '../../types';
 
 interface BlogCardProps {
@@ -30,6 +34,20 @@ const BlogCard: React.FC<BlogCardProps> = ({ blog }) => {
             </a>
         </div>
     );
+};
+
+BlogCard.propTypes = {
+    blog: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        content: PropTypes.string.isRequired,
+        createdAt: PropTypes.instanceOf(Date).isRequired,
+        blocks: PropTypes.array.isRequired,
+        image: PropTypes.string,
+        alt: PropTypes.oneOfType([PropTypes.string, PropTypes.oneOf([undefined])]), // Corrección para alt
+        title: PropTypes.string.isRequired,
+        excerpt: PropTypes.string,
+        slug: PropTypes.string.isRequired,
+    }).isRequired,
 };
 
 export default BlogCard;

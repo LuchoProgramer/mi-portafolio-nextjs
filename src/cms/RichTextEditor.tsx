@@ -4,6 +4,7 @@ import React, { useRef, useEffect, useContext } from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { ThemeContext } from "@/context/ThemeContext";
+import type { Editor } from '@ckeditor/ckeditor5-core';
 
 interface RichTextEditorProps {
     value: string;
@@ -11,32 +12,36 @@ interface RichTextEditorProps {
 }
 
 const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange }) => {
-    const editorRef = useRef<any>(null);
+    const editorRef = useRef<Editor>(null);
     const themeContext = useContext(ThemeContext);
 
-    // Validar que el contexto esté disponible
     if (!themeContext) {
         throw new Error("RichTextEditor debe usarse dentro de ThemeProvider");
     }
 
     const { isDark } = themeContext;
 
-    // Cambiar estilo del editor dinámicamente según el tema
-    useEffect(() => {
-        if (editorRef.current) {
-            const editor = editorRef.current;
-            editor.editing.view.change((writer: any) => {
+    const updateEditorStyle = (editor: Editor, isDark: boolean) => {
+        const root = editor.editing.view.document.getRoot();
+        if (root) { // Verifica si 'root' no es null
+            editor.editing.view.change((writer) => {
                 writer.setStyle(
                     "background-color",
                     isDark ? "#2d3748" : "#ffffff",
-                    editor.editing.view.document.getRoot()
+                    root // Usa 'root' aquí
                 );
                 writer.setStyle(
                     "color",
                     isDark ? "#ffffff" : "#000000",
-                    editor.editing.view.document.getRoot()
+                    root // Usa 'root' aquí
                 );
             });
+        }
+    };
+
+    useEffect(() => {
+        if (editorRef.current) {
+            updateEditorStyle(editorRef.current, isDark);
         }
     }, [isDark]);
 
@@ -44,22 +49,10 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange }) => {
         <CKEditor
             editor={ClassicEditor}
             data={value}
-            onReady={(editor: any) => {
-                editorRef.current = editor;
-                editor.editing.view.change((writer: any) => {
-                    writer.setStyle(
-                        "background-color",
-                        isDark ? "#2d3748" : "#ffffff",
-                        editor.editing.view.document.getRoot()
-                    );
-                    writer.setStyle(
-                        "color",
-                        isDark ? "#ffffff" : "#000000",
-                        editor.editing.view.document.getRoot()
-                    );
-                });
+            onReady={(editor: Editor) => {
+                updateEditorStyle(editor, isDark);
             }}
-            onChange={(event: any, editor: any) => {
+            onChange={(event: any, editor: Editor) => {
                 const data = editor.getData();
                 onChange(data);
             }}
