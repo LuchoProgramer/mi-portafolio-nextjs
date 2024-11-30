@@ -55,7 +55,6 @@ const getBlogBySlug = async (slug: string): Promise<Blog | null> => {
     }
 };
 
-
 // Página dinámica
 const BlogDetail = async ({ params }: BlogDetailProps) => {
     const blog = await getBlogBySlug(params.slug);
@@ -81,7 +80,7 @@ const BlogDetail = async ({ params }: BlogDetailProps) => {
                             <div
                                 key={index}
                                 className="prose prose-lg dark:prose-invert"
-                                dangerouslySetInnerHTML={{ __html: block.content }}
+                                dangerouslySetInnerHTML={{ __html: block.content || "" }}
                             />
                         );
                     }
