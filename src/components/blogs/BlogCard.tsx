@@ -1,11 +1,13 @@
 "use client";
 
 import React from "react";
-import PropTypes from 'prop-types';
-import { Blog } from '../../types';
+// Eliminar la importación de PropTypes
+// import PropTypes from 'prop-types';
+// En BlogCard.tsx, importamos el tipo Blog correctamente
+import { Blog } from '../../types';  // Importación nombrada de Blog
 
 interface BlogCardProps {
-    blog: Blog;
+    blog: Blog;  // Usamos el tipo Blog para validar las propiedades
 }
 
 const BlogCard: React.FC<BlogCardProps> = ({ blog }) => {
@@ -36,18 +38,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ blog }) => {
     );
 };
 
-BlogCard.propTypes = {
-    blog: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        content: PropTypes.string.isRequired,
-        createdAt: PropTypes.instanceOf(Date).isRequired,
-        blocks: PropTypes.array.isRequired,
-        image: PropTypes.string,
-        alt: PropTypes.oneOfType([PropTypes.string, PropTypes.oneOf([undefined])]), // Corrección para alt
-        title: PropTypes.string.isRequired,
-        excerpt: PropTypes.string,
-        slug: PropTypes.string.isRequired,
-    }).isRequired,
-};
+// Eliminar el bloque propTypes, ya no es necesario con TypeScript
+// BlogCard.propTypes = { ... };
 
 export default BlogCard;

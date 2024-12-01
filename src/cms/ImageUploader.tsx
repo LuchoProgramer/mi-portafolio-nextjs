@@ -2,39 +2,34 @@ import React, { useState, ChangeEvent } from 'react';
 import { uploadImageToCloudinary, getTransformedImageUrl } from '../../src/utils/cloudinary';
 
 interface ImageUploaderProps {
-    onUpload: (url: string) => void; // Callback para enviar la URL al componente padre
+    onUpload: (url: string, alt: string) => void;
 }
 
 const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload }) => {
     const [file, setFile] = useState<File | null>(null);
-    const [preview, setPreview] = useState<string>(''); // Previsualización de la imagen seleccionada
+    const [preview, setPreview] = useState<string>('');
     const [isUploading, setIsUploading] = useState(false);
 
-    // Manejar cambio de archivo
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         const selectedFile = e.target.files?.[0];
         if (selectedFile) {
-            // Validar el tipo de archivo antes de establecerlo
             if (!selectedFile.type.startsWith('image/')) {
                 alert('Por favor, selecciona un archivo de imagen válido.');
                 return;
             }
 
             setFile(selectedFile);
-            setPreview(URL.createObjectURL(selectedFile)); // Mostrar vista previa
+            setPreview(URL.createObjectURL(selectedFile));
         }
     };
 
-    // Manejar subida de imagen
     const handleUpload = async () => {
-        if (!file) return; // Evitar subir si no hay archivo seleccionado
+        if (!file) return;
 
         setIsUploading(true);
         try {
-            // Subir la imagen a Cloudinary
             const uploadedUrl = await uploadImageToCloudinary(file);
 
-            // Generar una URL transformada para usar dimensiones consistentes
             const transformedUrl = getTransformedImageUrl(uploadedUrl, {
                 width: 600,
                 height: 400,
@@ -42,17 +37,17 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload }) => {
                 gravity: 'auto',
             });
 
-            // Notificar al componente padre la URL transformada
-            onUpload(transformedUrl);
+            const alt = prompt("Describe brevemente la imagen:") || "Imagen relacionada con el blog";
+
+            onUpload(transformedUrl, alt);
             alert('Imagen subida exitosamente');
         } catch (error) {
             console.error('Error al subir la imagen:', error);
             alert('Error al subir la imagen, inténtalo nuevamente.');
         } finally {
-            // Restaurar estado inicial
             setIsUploading(false);
-            setFile(null); // Limpiar el archivo seleccionado
-            setPreview(''); // Limpiar la vista previa
+            setFile(null);
+            setPreview('');
         }
     };
 
@@ -72,7 +67,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload }) => {
                     <img
                         src={preview}
                         alt="Vista previa"
-                        className="w-full h-[300px] object-cover rounded shadow" // Dimensiones consistentes en la vista previa
+                        className="w-full h-[300px] object-cover rounded shadow"
                     />
                 </div>
             )}

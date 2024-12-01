@@ -1,3 +1,4 @@
+// Define el tipo de bloque de contenido en el blog
 export interface BlogBlock {
     type: "text" | "image" | "video";
     content?: string; // Para bloques de texto
@@ -5,14 +6,17 @@ export interface BlogBlock {
     alt?: string; // Para descripciones de imágenes
 }
 
+// Definimos la interfaz para un Blog
 export interface Blog {
-    id: string; // ID del blog (obligatorio)
-    title: string; // Título del blog (obligatorio)
-    content: string; // Contenido del blog (obligatorio)
-    createdAt: Date | null; // Fecha de creación (puede ser nula)
-    slug: string; // Slug (obligatorio)
-    image?: string | null;
-    alt?: string; // Texto alternativo para la imagen (opcional)
-    excerpt?: string; // Resumen o extracto del contenido (opcional)
-    blocks: BlogBlock[]; // Array de bloques de contenido
+    id: string;
+    content: string;
+    createdAt: Date;
+    blocks: BlogBlock[]; // Cambiado de any[] a BlogBlock[]
+    image?: string;  // Ahora `image` es opcional y solo puede ser una cadena o undefined
+    alt?: string; // `alt` es opcional y puede ser una cadena o undefined
+    title: string;
+    excerpt?: string;
+    slug: string;
 }
+
+export default Blog;  // Exportación por defecto

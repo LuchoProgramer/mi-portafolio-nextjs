@@ -1,6 +1,14 @@
 {
-  "extends": "next/core-web-vitals", //  Extiende la configuración base de Next.js
+  "extends": "next/core-web-vitals",
   "rules": {
-    "react/react-in-jsx-scope": "off" // Desactiva la regla que causa el error
+    "react/react-in-jsx-scope": "off"
+  },
+  "plugins": [
+    "react"
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   }
 }

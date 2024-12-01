@@ -7,16 +7,19 @@ import { db } from "@/lib/firebase";
 import RichTextEditor from "@/cms/RichTextEditor";
 import ImageUploader from "@/cms/ImageUploader";
 import VideoEmbedder from "@/cms/VideoEmbedder";
-import { uploadImageToCloudinary } from "@/utils/cloudinary";
 
 interface Block {
     type: "text" | "image" | "video";
-    content?: string;
-    src?: string;
-    alt?: string;
+    content?: string;  // Contenido opcional para bloques de texto
+    src?: string;  // URL de la imagen o video
+    alt?: string;  // Texto alternativo para la imagen
 }
 
-const BlogEdit = ({ params }: { params: { id: string } }) => {
+interface BlogEditProps {
+    params: { id: string };
+}
+
+const BlogEdit = ({ params }: BlogEditProps) => {
     const router = useRouter();
     const { id } = params;
 
@@ -32,7 +35,7 @@ const BlogEdit = ({ params }: { params: { id: string } }) => {
                 if (blogDoc.exists()) {
                     const blogData = blogDoc.data();
                     setTitle(blogData.title || "");
-                    setBlocks(blogData.blocks || []);
+                    setBlocks(blogData.blocks || []);  // Asegúrate de que blocks esté correctamente formateado
                 } else {
                     setError("El blog no existe.");
                 }
@@ -53,19 +56,8 @@ const BlogEdit = ({ params }: { params: { id: string } }) => {
         setBlocks([...blocks, { type: "text", content: "" }]);
     };
 
-    const handleAddImage = async (file: File) => {
-        try {
-            const url = await uploadImageToCloudinary(file);
-            const alt = prompt("Describe brevemente la imagen:") || "Imagen relacionada con el blog";
-            setBlocks([...blocks, { type: "image", src: url, alt }]);
-        } catch (error: unknown) {
-            console.error("Error al subir la imagen:", error);
-            if (error instanceof Error) {
-                setError(error.message);
-            } else {
-                setError("Ocurrió un error al subir la imagen.");
-            }
-        }
+    const handleAddImage = (url: string, alt: string) => {
+        setBlocks([...blocks, { type: "image", src: url, alt }]);
     };
 
     const handleAddVideo = (url: string) => {
@@ -85,6 +77,7 @@ const BlogEdit = ({ params }: { params: { id: string } }) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        // Validar título y bloques
         if (!title.trim() || blocks.length === 0) {
             setError("Por favor, completa el título y agrega al menos un bloque.");
             return;
@@ -178,12 +171,7 @@ const BlogEdit = ({ params }: { params: { id: string } }) => {
                     <button type="button" onClick={handleAddText} className="px-4 py-2 bg-blue-500 text-white rounded-md">
                         Agregar Texto
                     </button>
-                    <ImageUploader
-                        onUpload={(url: string) => {
-                            const alt = prompt("Describe brevemente la imagen:") || "Imagen relacionada con el blog";
-                            setBlocks((prevBlocks) => [...prevBlocks, { type: "image", src: url, alt }]);
-                        }}
-                    />
+                    <ImageUploader onUpload={handleAddImage} />
                     <VideoEmbedder onEmbed={handleAddVideo} />
                 </div>
 

@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { db } from "../../lib/firebase";
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
-import RichTextEditor from "../RichTextEditor";
-import { uploadImageToCloudinary } from "../../utils/cloudinary";
 import { generateSlug } from "../../utils/slugGenerator";
 import { parseVideoUrl } from "../../utils/videoUtils";
 import dynamic from "next/dynamic";
 
 const ImageUploader = dynamic(() => import("../ImageUploader"), { ssr: false });
 const VideoEmbedder = dynamic(() => import("../VideoEmbedder"), { ssr: false });
+const RichTextEditor = dynamic(() => import("../RichTextEditor"), { ssr: false });
 
 interface Block {
     type: "text" | "image" | "video";

@@ -5,14 +5,36 @@ import { db } from "@/lib/firebase";
 import { Blog } from "@/types";
 import Comments from "@/components/blogs/Comments";
 
+// Función para obtener un blog por su "slug" desde Firebase
+const getBlogBySlug = async (slug: string): Promise<Blog | null> => {
+    try {
+        const blogsRef = collection(db, "blogs");
+        const q = query(blogsRef, where("slug", "==", slug));
+        const querySnapshot = await getDocs(q);
 
-interface BlogDetailProps {
-    params: { slug: string };
+        if (!querySnapshot.empty) {
+            const blogDoc = querySnapshot.docs[0];
+            const data = blogDoc.data() as Blog;
+            return { ...data, id: blogDoc.id };
+        }
+
+        return null;
+    } catch (error) {
+        console.error("Error al obtener el blog:", error);
+        return null;
+    }
+};
+
+// Ajuste para trabajar con Next.js App Router y el tipo correcto para rutas dinámicas
+export interface BlogDetailPageProps {
+    params: Promise<{ slug: string }>;
 }
 
-// Obtener los metadatos dinámicos
-export async function generateMetadata({ params }: BlogDetailProps): Promise<Metadata> {
-    const blog = await getBlogBySlug(params.slug);
+// Función para obtener los metadatos de forma dinámica
+export async function generateMetadata({ params }: BlogDetailPageProps): Promise<Metadata> {
+    const { slug } = await params; // Obtener el slug de la promesa
+
+    const blog = await getBlogBySlug(slug);
     if (!blog) {
         return { title: "Blog no encontrado", description: "El blog solicitado no existe." };
     }
@@ -24,7 +46,7 @@ export async function generateMetadata({ params }: BlogDetailProps): Promise<Met
             title: blog.title,
             description: blog.excerpt || "Lee este interesante artículo en mi blog de desarrollo web.",
             images: [blog.image || "/default-blog-image.jpg"],
-            url: `https://luchodev.netlify.app/blog/${params.slug}`,
+            url: `https://luchodev.netlify.app/blog/${slug}`,
             type: "article",
         },
         twitter: {
@@ -36,30 +58,11 @@ export async function generateMetadata({ params }: BlogDetailProps): Promise<Met
     };
 }
 
-// Función para obtener un blog por slug
-const getBlogBySlug = async (slug: string): Promise<Blog | null> => {
-    try {
-        const blogsRef = collection(db, "blogs");
-        const q = query(blogsRef, where("slug", "==", slug));
-        const querySnapshot = await getDocs(q);
+// Componente de la página dinámica, ahora adaptado para Next.js App Router
+const BlogDetail = async ({ params }: BlogDetailPageProps) => {
+    const { slug } = await params; // Obtener el slug de la promesa
 
-        if (!querySnapshot.empty) {
-            const blogDoc = querySnapshot.docs[0];
-            const data = blogDoc.data() as Blog;
-
-            return { ...data, id: blogDoc.id };
-        }
-
-        return null;
-    } catch (error) {
-        console.error("Error al obtener el blog:", error);
-        return null;
-    }
-};
-
-// Página dinámica
-const BlogDetail = async ({ params }: BlogDetailProps) => {
-    const blog = await getBlogBySlug(params.slug);
+    const blog = await getBlogBySlug(slug);
 
     if (!blog) {
         return (
@@ -89,7 +92,7 @@ const BlogDetail = async ({ params }: BlogDetailProps) => {
                     if (block.type === "image") {
                         return (
                             <div key={index} className="flex justify-center">
-                                {block.src && ( // Verifica si block.src existe
+                                {block.src && (
                                     <img
                                         src={block.src}
                                         alt={block.alt || `Imagen del blog ${index}`}
@@ -102,7 +105,7 @@ const BlogDetail = async ({ params }: BlogDetailProps) => {
                     if (block.type === "video") {
                         return (
                             <div key={index} className="relative" style={{ paddingTop: "56.25%" }}>
-                                {block.src && ( // Verifica si block.src existe
+                                {block.src && (
                                     <iframe
                                         src={block.src}
                                         title={`Video ${index}`}
@@ -121,5 +124,6 @@ const BlogDetail = async ({ params }: BlogDetailProps) => {
         </div>
     );
 };
+
 
 export default BlogDetail;

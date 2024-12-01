@@ -12,7 +12,7 @@ interface RichTextEditorProps {
 }
 
 const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange }) => {
-    const editorRef = useRef<Editor>(null);
+    const editorRef = useRef<Editor | null>(null);
     const themeContext = useContext(ThemeContext);
 
     if (!themeContext) {
@@ -23,17 +23,17 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange }) => {
 
     const updateEditorStyle = (editor: Editor, isDark: boolean) => {
         const root = editor.editing.view.document.getRoot();
-        if (root) { // Verifica si 'root' no es null
+        if (root) {
             editor.editing.view.change((writer) => {
                 writer.setStyle(
                     "background-color",
                     isDark ? "#2d3748" : "#ffffff",
-                    root // Usa 'root' aquí
+                    root
                 );
                 writer.setStyle(
                     "color",
                     isDark ? "#ffffff" : "#000000",
-                    root // Usa 'root' aquí
+                    root
                 );
             });
         }
@@ -49,10 +49,11 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange }) => {
         <CKEditor
             editor={ClassicEditor}
             data={value}
-            onReady={(editor: Editor) => {
+            onReady={(editor) => {
+                editorRef.current = editor; // Guardamos la referencia al editor
                 updateEditorStyle(editor, isDark);
             }}
-            onChange={(event: any, editor: Editor) => {
+            onChange={(_, editor) => {
                 const data = editor.getData();
                 onChange(data);
             }}

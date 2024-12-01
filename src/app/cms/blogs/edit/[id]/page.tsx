@@ -1,12 +1,15 @@
-import React from "react";
-import BlogEdit from "@/cms/components/BlogEdit"; // Ruta al componente de edición de blogs
+"use client";
 
-interface Props {
-    params: { id: string }; // El objeto params contendrá el ID dinámico de la ruta
+import React from "react";
+import BlogEdit from "@/cms/components/BlogEdit";
+
+// Define la interfaz para las props
+interface PageProps {
+    params: Promise<{ id: string }>;
 }
 
-const EditBlogPage: React.FC<Props> = ({ params }) => {
-    const { id } = params;
+const EditBlogPage: React.FC<PageProps> = async ({ params }) => {
+    const { id } = await params;
 
     return (
         <div>

@@ -21,7 +21,7 @@ function TravelMap() {
         const initializeMap = async () => {
             if (!LRef.current) {
                 const { default: L } = await import("leaflet");
-                (window as any).L = L;
+                (window as { L: typeof L }).L = L;
                 await import("leaflet.awesome-markers");
                 LRef.current = L;
             }

@@ -1,23 +1,24 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { Blog } from '../../types';
+import { Blog } from '../../types'; // Asegúrate de importar correctamente el tipo Blog
 import BlogCard from './BlogCard';
 import { getBlogs } from '../../lib/firebase';
 
 const Blogs: React.FC = () => {
-    const [blogs, setBlogs] = useState<Blog[]>([]);
+    const [blogs, setBlogs] = useState<Blog[]>([]); // Aquí estamos usando Blog[] como tipo
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const fetchBlogs = async () => {
             try {
                 const blogsList = await getBlogs();
-                // Ajustar la propiedad image para evitar null
+                // Si el tipo ya está bien definido, no necesitas transformar las propiedades image y alt
+                // Asegúrate que image y alt estén correctamente asignados cuando los blogs se obtienen
                 const blogsWithImage = blogsList.map(blog => ({
                     ...blog,
-                    image: blog.image || undefined, // Reemplazar null con undefined
-                    alt: blog.alt || undefined // Asegurar que alt no sea null
+                    image: blog.image ?? undefined, // Asegurando que image sea string | undefined
+                    alt: blog.alt ?? undefined, // Asegurando que alt sea string | undefined
                 }));
                 setBlogs(blogsWithImage);
             } catch (error) {

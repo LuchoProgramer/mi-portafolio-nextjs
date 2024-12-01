@@ -15,8 +15,6 @@ import {
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { Blog } from '../types';
 
-// Tipos para blog (puedes extenderlo según tus necesidades)
-
 // Configuración de Firebase
 const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -74,6 +72,7 @@ export const getBlogs = async (limitNumber = 10): Promise<Blog[]> => {
                 image: data.image || null, // Opcional
                 alt: data.alt || "Imagen del blog", // Opcional
                 excerpt: data.excerpt || data.content?.substring(0, 150) || "No hay descripción disponible.", // Opcional
+                blocks: data.blocks || [], // Agregado: si no hay bloques, asigna un array vacío
             });
         });
 

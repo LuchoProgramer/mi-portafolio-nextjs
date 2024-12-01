@@ -47,13 +47,13 @@ export const uploadImageToCloudinary = async (file: File): Promise<string> => {
 
         // Devuelve la URL pública de la imagen subida
         return response.data.secure_url;
-    } catch (error: any) {
+    } catch (error: unknown) { // Cambiamos any por unknown
         // Manejo de errores
-        if (error.response) {
+        if (axios.isAxiosError(error) && error.response) { // Verificamos si es un error de Axios
             console.error('Cloudinary Error:', error.response.data);
             throw new Error(`Cloudinary Error: ${error.response.data.error?.message || 'Error desconocido.'}`);
         } else {
-            console.error('Error de red o servidor:', error.message);
+            console.error('Error de red o servidor:', error);
             throw new Error('Error de red o servidor. Inténtalo de nuevo.');
         }
     }
