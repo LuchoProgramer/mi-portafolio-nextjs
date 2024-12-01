@@ -4,17 +4,18 @@ import React, { useEffect, useRef } from "react";
 import "leaflet/dist/leaflet.css";
 import "leaflet.awesome-markers/dist/leaflet.awesome-markers.css";
 import "@fortawesome/fontawesome-free/css/all.css";
-import styles from "./TravelMap.module.css"; // Importamos los estilos como un módulo CSS
+import styles from "./TravelMap.module.css";
 import { useTheme } from "@/context/ThemeContext";
 import { LatLngTuple } from "leaflet";
 import { travelRoute } from "./TravelImages";
+import type { Map, TileLayer } from "leaflet";
 
 function TravelMap() {
     const { isDark } = useTheme();
     const mapContainerRef = useRef<HTMLDivElement>(null);
-    const mapRef = useRef<any>(null);
-    const tileLayerRef = useRef<any>(null);
-    const LRef = useRef<any>(null);
+    const mapRef = useRef<Map | null>(null);
+    const tileLayerRef = useRef<TileLayer | null>(null);
+    const LRef = useRef<typeof import("leaflet") | null>(null);
 
     useEffect(() => {
         const initializeMap = async () => {
@@ -33,30 +34,34 @@ function TravelMap() {
                     zoom: 3,
                 });
 
-                tileLayerRef.current = L.tileLayer(
-                    isDark
-                        ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-                        : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
-                    {
-                        attribution: "&copy; <a href='https://carto.com/attributions'>CARTO</a>",
-                    }
-                ).addTo(mapRef.current);
+                if (mapRef.current) {
+                    tileLayerRef.current = L.tileLayer(
+                        isDark
+                            ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                            : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                        {
+                            attribution: "&copy; <a href='https://carto.com/attributions'>CARTO</a>",
+                        }
+                    ).addTo(mapRef.current);
+                }
 
                 travelRoute.forEach((location) => {
-                    L.marker(location.coords as LatLngTuple, {
-                        icon: (L as any).AwesomeMarkers.icon({
-                            icon: "map-marker-alt",
-                            markerColor: "blue",
-                            prefix: "fa",
-                            iconColor: "white",
-                        }),
-                    })
-                        .bindPopup(
-                            `<div class="${styles["popup-container"]}">
-                                <img src="${location.img}" alt="${location.name}" class="${styles["popup-image"]}">
-                            </div>`
-                        )
-                        .addTo(mapRef.current);
+                    if (mapRef.current) {
+                        L.marker(location.coords as LatLngTuple, {
+                            icon: L.AwesomeMarkers.icon({
+                                icon: "map-marker-alt",
+                                markerColor: "blue",
+                                prefix: "fa",
+                                iconColor: "white",
+                            }),
+                        })
+                            .bindPopup(
+                                `<div class="${styles["popup-container"]}">
+                                    <img src="${location.img}" alt="${location.name}" class="${styles["popup-image"]}">
+                                </div>`
+                            )
+                            .addTo(mapRef.current);
+                    }
                 });
             }
         };
@@ -86,7 +91,7 @@ function TravelMap() {
                 <h2 className="text-3xl font-bold text-center mb-8">Lugares que he Visitado</h2>
                 <div
                     ref={mapContainerRef}
-                    className={styles["map-container"]} // Aplicamos la clase CSS del módulo
+                    className={styles["map-container"]}
                 ></div>
             </div>
         </section>

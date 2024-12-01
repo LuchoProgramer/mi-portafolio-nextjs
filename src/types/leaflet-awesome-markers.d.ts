@@ -1,9 +1,14 @@
-declare module 'leaflet.awesome-markers' {
-    import * as L from 'leaflet';
+import * as L from 'leaflet';
 
+declare module 'leaflet' {
     namespace AwesomeMarkers {
-        function icon(options: any): L.Icon;
-    }
+        interface AwesomeMarkerOptions extends L.IconOptions {
+            icon: string;
+            markerColor: string;
+            prefix: 'fa' | 'glyphicon';
+            iconColor?: string;
+        }
 
-    export default AwesomeMarkers;
+        function icon(options: AwesomeMarkerOptions): L.Icon;
+    }
 }

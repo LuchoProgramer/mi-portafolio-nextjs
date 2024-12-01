@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react"; // Eliminamos useEffect
 import Image from "next/image";
-import { FiArrowRight, FiCopy, FiCheck, FiMail, FiSend } from "react-icons/fi";
+import { FiCopy, FiCheck, FiMail, FiSend } from "react-icons/fi"; // Eliminamos FiArrowRight
 import { FaLinkedin, FaGithub } from "react-icons/fa";
 
 const Home: React.FC = () => {

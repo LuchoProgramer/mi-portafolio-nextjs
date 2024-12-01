@@ -1,6 +1,12 @@
-// components/home/TravelImages.tsx
+import { LatLngTuple } from "leaflet";
 
-export const travelRoute = [
+interface TravelLocation {
+    coords: LatLngTuple;
+    img: string;
+    name: string;
+}
+
+export const travelRoute: TravelLocation[] = [
     { name: 'Quito', coords: [-0.1807, -78.4678], img: 'https://res.cloudinary.com/dltfsttr7/image/upload/v1731947461/Quito_gag520.jpg' },
     { name: 'Cuenca', coords: [-2.9006, -79.0045], img: 'https://res.cloudinary.com/dltfsttr7/image/upload/v1731947486/Cuenca_i5hdbb.jpg' },
     { name: 'Cajamarca', coords: [-7.1617, -78.5127], img: 'https://res.cloudinary.com/dltfsttr7/image/upload/v1731947491/Cajamarca_zogcqe.jpg' },
