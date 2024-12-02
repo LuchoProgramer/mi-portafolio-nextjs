@@ -3,15 +3,15 @@ import Link from "next/link";
 
 interface NavigationMenuProps {
     isOpen: boolean;
-    user: boolean; // Cambiado a booleano para representar si hay un usuario autenticado.
+    user: boolean;
     toggleMenu: () => void;
 }
 
 const NavigationMenu: React.FC<NavigationMenuProps> = ({ isOpen, user, toggleMenu }) => {
     return (
         <nav
-            className={`${isOpen ? "block" : "hidden"
-                } absolute top-full left-0 w-full bg-primary-dark md:static md:block md:w-auto`}
+            className={`${isOpen ? "block" : "hidden"} 
+                absolute top-full left-0 w-full bg-primary-dark md:static md:block md:w-auto`}
             aria-label="Menú principal"
         >
             <ul className="flex flex-col md:flex-row md:items-center md:space-x-6 p-4 md:p-0">

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import Link from "next/link";
 import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
@@ -21,18 +21,21 @@ interface UserMenuProps {
 const UserMenu: React.FC<UserMenuProps> = ({ user, role }) => {
     const [menuOpen, setMenuOpen] = useState(false);
 
-    const toggleUserMenu = () => setMenuOpen((prev) => !prev);
+    // Uso de useCallback para memorizar las funciones y evitar recrearlas en cada render
+    const toggleUserMenu = useCallback(() => setMenuOpen((prev) => !prev), []);
 
-    const handleSignOut = async () => {
+    const handleSignOut = useCallback(async () => {
         try {
             await signOut(auth);
             setMenuOpen(false);
         } catch (error) {
             console.error("Error al cerrar sesión:", error);
         }
-    };
+    }, []);
 
     const renderAvatar = () => {
+        const ariaLabel = user?.displayName ? `Menú de usuario: ${user.displayName}` : "Menú de usuario";
+
         if (user?.photoURL) {
             return (
                 <img
@@ -40,6 +43,9 @@ const UserMenu: React.FC<UserMenuProps> = ({ user, role }) => {
                     alt={user.displayName || "Usuario"}
                     className="w-8 h-8 rounded-full cursor-pointer"
                     onClick={toggleUserMenu}
+                    aria-label={ariaLabel}
+                    aria-haspopup="true"
+                    aria-expanded={menuOpen ? "true" : "false"}
                 />
             );
         }
@@ -49,6 +55,9 @@ const UserMenu: React.FC<UserMenuProps> = ({ user, role }) => {
             <div
                 className="w-8 h-8 bg-primary-light text-primary-dark rounded-full flex items-center justify-center cursor-pointer"
                 onClick={toggleUserMenu}
+                aria-label={ariaLabel}
+                aria-haspopup="true"
+                aria-expanded={menuOpen ? "true" : "false"}
             >
                 {initial}
             </div>
@@ -89,7 +98,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user, role }) => {
                                     <Link
                                         href="/cms/blogs"
                                         className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700"
-                                        onClick={() => setMenuOpen(false)} // Asegúrate de que setMenuOpen existe
+                                        onClick={() => setMenuOpen(false)}
                                     >
                                         Lista de Blogs
                                     </Link>
@@ -113,4 +122,5 @@ const UserMenu: React.FC<UserMenuProps> = ({ user, role }) => {
     );
 };
 
-export default UserMenu;
+// Memoizamos el componente para evitar re-renderizados innecesarios
+export default React.memo(UserMenu);

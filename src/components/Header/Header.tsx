@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect } from "react"; // Importa useRef y useEffect
+import React, { useRef, useEffect, useCallback } from "react"; // Importa useRef, useEffect y useCallback
 import Link from "next/link";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/lib/firebase";
@@ -14,6 +14,11 @@ import SignUp from "@/components/auth/SignUp";
 import useUserRole from "@/hooks/useUserRole";
 import useModal from "@/hooks/useModal";
 import useNavigationMenu from "@/hooks/useNavigationMenu";
+
+// Usamos React.memo para los componentes que no cambian frecuentemente
+const MemoizedNavigationMenu = React.memo(NavigationMenu);
+const MemoizedUserMenu = React.memo(UserMenu);
+const MemoizedModal = React.memo(Modal);
 
 const Header = () => {
     const [user] = useAuthState(auth);
@@ -32,19 +37,23 @@ const Header = () => {
     const { isOpen, toggleMenu, closeMenu } = useNavigationMenu();
     const menuRef = useRef<HTMLDivElement>(null); // Agrega una ref al elemento del menú
 
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = useCallback(
+        (event: MouseEvent) => {
             if (isOpen && menuRef.current && !menuRef.current.contains(event.target as Node)) {
                 closeMenu();
             }
-        };
+        },
+        [isOpen, closeMenu]
+    );
 
-        // Agrega el event listener cuando el componente se monta
-        document.addEventListener('mousedown', handleClickOutside);
-
-        // Remueve el event listener cuando el componente se desmonta
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [isOpen, closeMenu, menuRef]); // Agrega las dependencias del useEffect
+    useEffect(() => {
+        if (isOpen) {
+            document.addEventListener("mousedown", handleClickOutside);
+            return () => {
+                document.removeEventListener("mousedown", handleClickOutside);
+            };
+        }
+    }, [isOpen, handleClickOutside]);
 
     return (
         <header className="bg-primary-dark text-white p-4 fixed w-full z-20 shadow-lg">
@@ -62,8 +71,8 @@ const Header = () => {
                 {/* Contenedor del menú y opciones de usuario */}
                 <div className="flex items-center space-x-4">
                     {/* Menú de Navegación */}
-                    <div ref={menuRef}> {/* Asigna la ref al elemento del menú */}
-                        <NavigationMenu
+                    <div ref={menuRef}>
+                        <MemoizedNavigationMenu
                             isOpen={isOpen}
                             toggleMenu={toggleMenu}
                             user={user != null}
@@ -79,7 +88,7 @@ const Header = () => {
                     ) : roleError ? (
                         <p>Error: {roleError}</p>
                     ) : user != null ? (
-                        <UserMenu user={user} role={role || "viewer"} />
+                        <MemoizedUserMenu user={user} role={role || "viewer"} />
                     ) : (
                         <div className="hidden md:flex space-x-4">
                             <button
@@ -109,7 +118,7 @@ const Header = () => {
             </div>
 
             {/* Modal para Iniciar Sesión y Registrarse */}
-            <Modal isOpen={isModalOpen} onClose={closeModal}>
+            <MemoizedModal isOpen={isModalOpen} onClose={closeModal}>
                 <div className="dark:bg-gray-800 dark:text-gray-200">
                     {isSignIn ? (
                         <SignIn onSuccess={closeModal} switchToSignUp={switchToSignUp} />
@@ -117,7 +126,7 @@ const Header = () => {
                         <SignUp onSuccess={closeModal} switchToSignIn={switchToSignIn} />
                     )}
                 </div>
-            </Modal>
+            </MemoizedModal>
         </header>
     );
 };
