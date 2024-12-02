@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable no-unused-vars */
 
 import React, { useRef, useEffect, useContext } from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
@@ -8,7 +9,7 @@ import type { Editor } from '@ckeditor/ckeditor5-core';
 
 interface RichTextEditorProps {
     value: string;
-    onChange: (data: string) => void;
+    onChange: (content: string) => void;
 }
 
 const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange }) => {
@@ -50,12 +51,12 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange }) => {
             editor={ClassicEditor}
             data={value}
             onReady={(editor) => {
-                editorRef.current = editor; // Guardamos la referencia al editor
+                editorRef.current = editor;
                 updateEditorStyle(editor, isDark);
             }}
             onChange={(_, editor) => {
-                const data = editor.getData();
-                onChange(data);
+                const content = editor.getData();
+                onChange(content);
             }}
             config={{
                 toolbar: [

@@ -1,8 +1,12 @@
+/* eslint-disable no-unused-vars */
+
 import React, { useState, ChangeEvent } from 'react';
 import { uploadImageToCloudinary, getTransformedImageUrl } from '../../src/utils/cloudinary';
 
 interface ImageUploaderProps {
     onUpload: (url: string, alt: string) => void;
+    url: string;  // Esta propiedad no se usa
+    alt: string;  // Esta propiedad no se usa
 }
 
 const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload }) => {
@@ -40,6 +44,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload }) => {
             const alt = prompt("Describe brevemente la imagen:") || "Imagen relacionada con el blog";
 
             onUpload(transformedUrl, alt);
+
             alert('Imagen subida exitosamente');
         } catch (error) {
             console.error('Error al subir la imagen:', error);
