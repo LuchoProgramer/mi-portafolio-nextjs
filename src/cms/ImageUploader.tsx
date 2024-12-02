@@ -1,12 +1,10 @@
-/* eslint-disable no-unused-vars */
-
 import React, { useState, ChangeEvent } from 'react';
 import { uploadImageToCloudinary, getTransformedImageUrl } from '../../src/utils/cloudinary';
 
 interface ImageUploaderProps {
     onUpload: (url: string, alt: string) => void;
-    url: string;  // Esta propiedad no se usa
-    alt: string;  // Esta propiedad no se usa
+    url: string;
+    alt: string;
 }
 
 const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload }) => {

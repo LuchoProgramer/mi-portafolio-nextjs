@@ -21,11 +21,12 @@ const BlogCreate: React.FC = () => {
     const [blocks, setBlocks] = useState<Block[]>([]);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
+    const [imageUrl, setImageUrl] = useState<string>("");
+    const [imageAlt, setImageAlt] = useState<string>("");
 
     const handleAddText = () => {
         setBlocks([...blocks, { type: "text", content: "" }]);
     };
-
 
     const handleAddVideo = async (url: string) => {
         try {
@@ -94,6 +95,8 @@ const BlogCreate: React.FC = () => {
             alert("Blog creado exitosamente");
             setTitle("");
             setBlocks([]);
+            setImageUrl("");
+            setImageAlt("");
         } catch (err: unknown) {
             console.error("Error al crear el blog:", err);
             if (err instanceof Error) {
@@ -132,7 +135,6 @@ const BlogCreate: React.FC = () => {
                             key={index}
                             className="relative border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-700 w-full"
                         >
-                            {/* Botón para eliminar el bloque */}
                             <button
                                 type="button"
                                 onClick={() => handleRemoveBlock(index)}
@@ -141,26 +143,25 @@ const BlogCreate: React.FC = () => {
                                 X
                             </button>
 
-                            {/* Contenido del bloque con padding */}
                             <div className="p-4">
                                 {block.type === "text" && (
                                     <div className="w-full">
                                         <RichTextEditor
-                                            value={block.content || ""} // Asegúrate de que block.content no sea undefined
+                                            value={block.content || ""}
                                             onChange={(content) => handleBlockChange(index, { ...block, content })}
                                         />
                                     </div>
                                 )}
                                 {block.type === "image" && (
                                     <img
-                                        src={block.src || ""} // Asegúrate de que block.src no sea undefined
+                                        src={block.src || ""}
                                         alt={block.alt || "Imagen"}
                                         className="max-w-full h-40 object-contain rounded"
                                     />
                                 )}
                                 {block.type === "video" && (
                                     <iframe
-                                        src={block.src || ""} // Asegúrate de que block.src no sea undefined
+                                        src={block.src || ""}
                                         className="w-full h-40 rounded"
                                         allowFullScreen
                                         title={`Video ${index}`}
@@ -171,10 +172,8 @@ const BlogCreate: React.FC = () => {
                     ))}
                 </div>
 
-                {/* Contenedor de los botones */}
                 <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-between">
                     <div className="flex-1 flex flex-col justify-between items-center">
-                        {/* Contenedor vacío para alinear el botón con otros */}
                         <div className="h-10 w-full bg-transparent"></div>
                         <button
                             type="button"
@@ -186,8 +185,11 @@ const BlogCreate: React.FC = () => {
                     </div>
                     <div className="flex-1">
                         <ImageUploader
-                            onUpload={(url: string) => {
-                                const alt = prompt("Describe brevemente la imagen:") || "Imagen relacionada con el blog";
+                            url={imageUrl}
+                            alt={imageAlt}
+                            onUpload={(url: string, alt: string) => {
+                                setImageUrl(url);
+                                setImageAlt(alt);
                                 setBlocks((prevBlocks) => [...prevBlocks, { type: "image", src: url, alt }]);
                             }}
                         />
