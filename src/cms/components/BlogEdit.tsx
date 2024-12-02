@@ -10,9 +10,9 @@ import VideoEmbedder from "@/cms/VideoEmbedder";
 
 interface Block {
     type: "text" | "image" | "video";
-    content?: string;  // Contenido opcional para bloques de texto
-    src?: string;  // URL de la imagen o video
-    alt?: string;  // Texto alternativo para la imagen
+    content?: string;
+    src?: string;
+    alt?: string;
 }
 
 interface BlogEditProps {
@@ -27,6 +27,8 @@ const BlogEdit = ({ params }: BlogEditProps) => {
     const [blocks, setBlocks] = useState<Block[]>([]);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
+    const [imageUrl, setImageUrl] = useState<string>(""); // Estado para la URL de la imagen
+    const [imageAlt, setImageAlt] = useState<string>(""); // Estado para el texto alternativo
 
     useEffect(() => {
         const fetchBlog = async () => {
@@ -35,7 +37,7 @@ const BlogEdit = ({ params }: BlogEditProps) => {
                 if (blogDoc.exists()) {
                     const blogData = blogDoc.data();
                     setTitle(blogData.title || "");
-                    setBlocks(blogData.blocks || []);  // Asegúrate de que blocks esté correctamente formateado
+                    setBlocks(blogData.blocks || []);
                 } else {
                     setError("El blog no existe.");
                 }
@@ -77,7 +79,6 @@ const BlogEdit = ({ params }: BlogEditProps) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Validar título y bloques
         if (!title.trim() || blocks.length === 0) {
             setError("Por favor, completa el título y agrega al menos un bloque.");
             return;
@@ -109,11 +110,16 @@ const BlogEdit = ({ params }: BlogEditProps) => {
 
     return (
         <div className="py-12 mt-6 max-w-4xl mx-auto p-6 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md">
-            <h2 className="text-3xl font-bold mb-6 text-center text-gray-800 dark:text-white">Editar Blog</h2>
+            <h2 className="text-3xl font-bold mb-6 text-center text-gray-800 dark:text-white">
+                Editar Blog
+            </h2>
             {error && <div className="mb-4 text-red-500 text-center">{error}</div>}
             <form onSubmit={handleSubmit}>
                 <div className="mb-6">
-                    <label htmlFor="title" className="block text-gray-700 dark:text-gray-200 font-semibold mb-2">
+                    <label
+                        htmlFor="title"
+                        className="block text-gray-700 dark:text-gray-200 font-semibold mb-2"
+                    >
                         Título
                     </label>
                     <input
@@ -143,12 +149,18 @@ const BlogEdit = ({ params }: BlogEditProps) => {
                             {block.type === "text" && (
                                 <RichTextEditor
                                     value={block.content || ""}
-                                    onChange={(content) => handleBlockChange(index, { ...block, content })}
+                                    onChange={(content) =>
+                                        handleBlockChange(index, { ...block, content })
+                                    }
                                 />
                             )}
                             {block.type === "image" && (
                                 <div>
-                                    <img src={block.src || ""} alt={block.alt || "Imagen"} className="max-w-full h-auto rounded" />
+                                    <img
+                                        src={block.src || ""}
+                                        alt={block.alt || "Imagen"}
+                                        className="max-w-full h-auto rounded"
+                                    />
                                     <input
                                         type="text"
                                         value={block.alt || ""}
@@ -161,17 +173,34 @@ const BlogEdit = ({ params }: BlogEditProps) => {
                                 </div>
                             )}
                             {block.type === "video" && (
-                                <iframe src={block.src || ""} className="w-full h-auto rounded" allowFullScreen title={`Video ${index}`} />
+                                <iframe
+                                    src={block.src || ""}
+                                    className="w-full h-auto rounded"
+                                    allowFullScreen
+                                    title={`Video ${index}`}
+                                />
                             )}
                         </div>
                     ))}
                 </div>
 
                 <div className="mt-6 flex gap-4">
-                    <button type="button" onClick={handleAddText} className="px-4 py-2 bg-blue-500 text-white rounded-md">
+                    <button
+                        type="button"
+                        onClick={handleAddText}
+                        className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                    >
                         Agregar Texto
                     </button>
-                    <ImageUploader onUpload={handleAddImage} />
+                    <ImageUploader
+                        url={imageUrl}
+                        alt={imageAlt}
+                        onUpload={(url: string, alt: string) => {
+                            setImageUrl(url);
+                            setImageAlt(alt);
+                            handleAddImage(url, alt);
+                        }}
+                    />
                     <VideoEmbedder onEmbed={handleAddVideo} />
                 </div>
 
