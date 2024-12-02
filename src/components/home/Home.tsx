@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react"; // Eliminamos useEffect
+import React, { useState } from "react";
 import Image from "next/image";
-import { FiCopy, FiCheck, FiMail, FiSend } from "react-icons/fi"; // Eliminamos FiArrowRight
+import { FiCopy, FiCheck, FiMail, FiSend } from "react-icons/fi";
 import { FaLinkedin, FaGithub } from "react-icons/fa";
 
 const Home: React.FC = () => {
@@ -14,8 +14,8 @@ const Home: React.FC = () => {
         setTimeout(() => setCopied(false), 2000); // El mensaje desaparece después de 2 segundos
     };
 
-    const profileImg =
-        "https://res.cloudinary.com/dltfsttr7/image/upload/w_160,h_160,c_fill,q_auto,f_webp/v1731879784/Luis_Viteri_lxtxcc.jpg"; // Optimizado para WebP y tamaño adecuado
+    const profileImgBase =
+        "https://res.cloudinary.com/dltfsttr7/image/upload/c_fill,w_150,h_150,q_auto,f_webp/v1731879784/Luis_Viteri_lxtxcc.jpg";
 
     return (
         <section className="relative flex flex-col items-center justify-center min-h-screen bg-gray-light dark:bg-gray-veryDark text-gray-dark dark:text-gray-light px-6 py-10">
@@ -32,13 +32,13 @@ const Home: React.FC = () => {
                 <div className="flex flex-col md:flex-row items-center justify-center w-full mb-8">
                     {/* Imagen de Perfil */}
                     <Image
-                        src={profileImg}
+                        src={profileImgBase}
                         alt="Foto de Luis Viteri"
-                        width={160}
-                        height={160}
+                        width={150}
+                        height={150}
                         className="rounded-full object-cover shadow-lg transition-transform duration-300 ease-in-out hover:scale-105"
                         priority // Prioridad alta para optimizar LCP
-                        sizes="(max-width: 768px) 150px, 160px" // Ajusta el tamaño en dispositivos móviles
+                        sizes="(max-width: 768px) 120px, 160px" // Ajusta el tamaño en dispositivos móviles
                     />
 
                     {/* Información de Contacto */}
