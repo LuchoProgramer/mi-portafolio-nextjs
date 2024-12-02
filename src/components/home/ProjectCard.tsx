@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
@@ -30,15 +32,19 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         className="object-contain rounded-t-lg"
+                        priority
                     />
                 </div>
             )}
+
             {/* Título */}
             <h3 className="text-xl font-bold mb-2 text-gray-800 dark:text-gray-100">
                 {titulo}
             </h3>
+
             {/* Descripción */}
             <p className="text-gray-600 dark:text-gray-300 mb-4">{descripcion}</p>
+
             {/* Enlaces */}
             <div className="flex items-center space-x-4 mb-4">
                 {enlaceGithub && (
@@ -64,6 +70,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                     </a>
                 )}
             </div>
+
             {/* Tecnologías */}
             <div className="flex flex-wrap gap-2">
                 {tecnologias.map((tecnologia, index) => (

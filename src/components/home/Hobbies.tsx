@@ -25,8 +25,8 @@ const Hobbies: React.FC = () => {
             <div className="flex justify-center gap-8 flex-wrap">
                 {hobbies.map((hobby, index) => (
                     <div
-                        key={index}
-                        className="flex flex-col items-center text-gray-700 dark:text-gray-300 transition-transform hover:scale-105"
+                        key={hobby.label} // Usar label como clave única
+                        className="flex flex-col items-center text-gray-700 dark:text-gray-300 transition-all duration-300 ease-in-out transform hover:scale-110 hover:text-primary dark:hover:text-primary-light"
                         aria-label={hobby.label}
                     >
                         {hobby.icon}

@@ -24,29 +24,29 @@ const Languages: React.FC = () => {
                     Idiomas
                 </h2>
                 <div className="flex flex-wrap justify-center gap-8">
-                    {languages.map((lang, index) => (
+                    {languages.map(({ idioma, nivel, color }, index) => (
                         <div key={index} className="flex flex-col items-center">
                             {/* Gráfico Circular */}
-                            <div className="w-24 h-24 mb-3">
+                            <div className="w-24 h-24 mb-3 transition-all transform hover:scale-105">
                                 <CircularProgressbar
-                                    value={lang.nivel}
-                                    text={`${lang.nivel}%`}
+                                    value={nivel}
+                                    text={`${nivel}%`}
                                     styles={buildStyles({
                                         textSize: "16px",
-                                        pathColor: lang.color,
-                                        textColor: lang.color,
+                                        pathColor: color,
+                                        textColor: color,
                                         trailColor: "#d1d5db",
                                     })}
+                                    aria-label={`Nivel de idioma ${idioma}: ${nivel}%`}
                                 />
                             </div>
 
                             {/* Información del Idioma */}
                             <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
-                                {lang.idioma}
+                                {idioma}
                             </h3>
                             <span className="text-sm text-gray-600 dark:text-gray-400">
-                                {`Nivel: ${lang.nivel === 100 ? "Nativo" : lang.nivel === 75 ? "B2" : "B1"
-                                    }`}
+                                {`Nivel: ${nivel === 100 ? "Nativo" : nivel === 75 ? "B2" : "B1"}`}
                             </span>
                         </div>
                     ))}

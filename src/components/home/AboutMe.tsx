@@ -17,11 +17,12 @@ const AboutMe: React.FC = () => {
                     {/* Imagen */}
                     <div className="md:w-1/3 flex justify-center mb-6 md:mb-0">
                         <Image
-                            src="https://res.cloudinary.com/dltfsttr7/image/upload/w_200,h_200,c_fill,q_auto,f_auto/v1732416634/file-Jsh2amEnMytw75DmwtHCX4_1_kde3iy.webp"
+                            src="https://res.cloudinary.com/dltfsttr7/image/upload/c_fill,w_200,h_200,q_auto,f_auto/v1732416634/file-Jsh2amEnMytw75DmwtHCX4_1_kde3iy.webp"
                             alt="Foto de Luis Viteri"
                             width={192}
                             height={192}
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            priority
+                            sizes="(max-width: 768px) 120px, (max-width: 1200px) 160px, 192px"
                             className="rounded-full object-cover shadow-lg transition-transform duration-300 ease-in-out hover:scale-105"
                         />
                     </div>
