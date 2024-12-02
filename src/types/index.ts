@@ -11,7 +11,7 @@ export interface Blog {
     id: string;
     content: string;
     createdAt: Date;
-    blocks: BlogBlock[]; // Cambiado de any[] a BlogBlock[]
+    blocks: BlogBlock[];
     image?: string;  // Ahora `image` es opcional y solo puede ser una cadena o undefined
     alt?: string; // `alt` es opcional y puede ser una cadena o undefined
     title: string;

@@ -1,7 +1,10 @@
 import type { Config } from "tailwindcss";
+import forms from "@tailwindcss/forms";
+import typography from "@tailwindcss/typography";
+import aspectRatio from "@tailwindcss/aspect-ratio";
 
 const config: Config = {
-  darkMode: "class",
+  darkMode: "class", // Se utiliza el modo oscuro mediante una clase CSS
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -25,7 +28,7 @@ const config: Config = {
           light: "#F3F4F6",
           dark: "#111827",
         },
-        foreground: "var(--foreground)",
+        foreground: "var(--foreground)", // Asegúrate de que la variable esté definida en algún lugar
       },
       fontFamily: {
         sans: ["Inter", "system-ui", "Avenir", "Helvetica", "Arial", "sans-serif"],
@@ -44,9 +47,9 @@ const config: Config = {
     "bg-background-dark",
   ],
   plugins: [
-    require("@tailwindcss/forms"),
-    require("@tailwindcss/typography"),
-    require("@tailwindcss/aspect-ratio"),
+    forms,
+    typography,
+    aspectRatio,
   ],
 };
 

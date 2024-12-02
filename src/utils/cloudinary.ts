@@ -23,6 +23,11 @@ if (!CLOUDINARY_CONFIG.cloudName || !CLOUDINARY_CONFIG.uploadPreset) {
  * @returns {Promise<string>} - URL pública de la imagen subida.
  */
 export const uploadImageToCloudinary = async (file: File): Promise<string> => {
+    // Verificar si estamos en un entorno de navegador antes de usar FormData
+    if (typeof window === 'undefined') {
+        throw new Error('FormData no está disponible en el servidor');
+    }
+
     // Validación del archivo
     if (!file || !file.type.startsWith('image/')) {
         throw new Error('El archivo seleccionado no es una imagen válida.');
@@ -47,7 +52,7 @@ export const uploadImageToCloudinary = async (file: File): Promise<string> => {
 
         // Devuelve la URL pública de la imagen subida
         return response.data.secure_url;
-    } catch (error: unknown) { // Cambiamos any por unknown
+    } catch (error: unknown) {
         // Manejo de errores
         if (axios.isAxiosError(error) && error.response) { // Verificamos si es un error de Axios
             console.error('Cloudinary Error:', error.response.data);
