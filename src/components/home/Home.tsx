@@ -15,7 +15,7 @@ const Home: React.FC = () => {
     };
 
     const profileImg =
-        "https://res.cloudinary.com/dltfsttr7/image/upload/w_200,h_200,c_fill,q_auto,f_auto/v1731879784/Luis_Viteri_lxtxcc.jpg";
+        "https://res.cloudinary.com/dltfsttr7/image/upload/w_160,h_160,c_fill,q_auto,f_webp/v1731879784/Luis_Viteri_lxtxcc.jpg"; // Optimizado para WebP y tamaño adecuado
 
     return (
         <section className="relative flex flex-col items-center justify-center min-h-screen bg-gray-light dark:bg-gray-veryDark text-gray-dark dark:text-gray-light px-6 py-10">
@@ -38,6 +38,7 @@ const Home: React.FC = () => {
                         height={160}
                         className="rounded-full object-cover shadow-lg transition-transform duration-300 ease-in-out hover:scale-105"
                         priority // Prioridad alta para optimizar LCP
+                        sizes="(max-width: 768px) 150px, 160px" // Ajusta el tamaño en dispositivos móviles
                     />
 
                     {/* Información de Contacto */}
