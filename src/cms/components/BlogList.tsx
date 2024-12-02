@@ -37,7 +37,13 @@ const BlogList: React.FC = () => {
     }, []);
 
     const handleDelete = async (id: string) => {
-        if (!window.confirm("¿Estás seguro de que deseas eliminar este blog?")) return;
+        // Verifica si window está definido antes de usarlo
+        if (
+            typeof window !== "undefined" &&
+            !window.confirm("¿Estás seguro de que deseas eliminar este blog?")
+        ) {
+            return;
+        }
 
         try {
             await deleteDoc(doc(db, "blogs", id));
@@ -66,14 +72,23 @@ const BlogList: React.FC = () => {
                 <table className="w-full border border-gray-300 dark:border-gray-700 table-auto md:table-fixed">
                     <thead className="bg-gray-300 dark:bg-gray-700">
                         <tr>
-                            <th className="px-4 py-2 text-left text-gray-800 dark:text-gray-200">Título</th>
-                            <th className="px-4 py-2 text-left text-gray-800 dark:text-gray-200">Imagen</th>
-                            <th className="px-4 py-2 text-left text-gray-800 dark:text-gray-200">Acciones</th>
+                            <th className="px-4 py-2 text-left text-gray-800 dark:text-gray-200">
+                                Título
+                            </th>
+                            <th className="px-4 py-2 text-left text-gray-800 dark:text-gray-200">
+                                Imagen
+                            </th>
+                            <th className="px-4 py-2 text-left text-gray-800 dark:text-gray-200">
+                                Acciones
+                            </th>
                         </tr>
                     </thead>
                     <tbody className="bg-white dark:bg-gray-900">
                         {blogs.map((blog) => (
-                            <tr key={blog.id} className="border-b border-gray-300 dark:border-gray-700">
+                            <tr
+                                key={blog.id}
+                                className="border-b border-gray-300 dark:border-gray-700"
+                            >
                                 <td className="px-4 py-2 text-gray-800 dark:text-gray-200 text-sm md:text-base">
                                     {blog.title}
                                 </td>
@@ -90,7 +105,7 @@ const BlogList: React.FC = () => {
                                 </td>
                                 <td className="px-4 py-2 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
                                     <button
-                                        onClick={() => router.push(`/cms/blogs/edit/${blog.id}`)} // Ruta ajustada
+                                        onClick={() => router.push(`/cms/blogs/edit/${blog.id}`)}
                                         className="flex items-center space-x-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 text-xs md:text-sm rounded"
                                     >
                                         <AiOutlineEdit size={16} />
@@ -116,7 +131,9 @@ const BlogList: React.FC = () => {
                         key={blog.id}
                         className="border-b border-gray-300 dark:border-gray-700 p-4 bg-white dark:bg-gray-900 rounded-lg mb-4"
                     >
-                        <h3 className="font-bold text-gray-800 dark:text-gray-200 text-sm">{blog.title}</h3>
+                        <h3 className="font-bold text-gray-800 dark:text-gray-200 text-sm">
+                            {blog.title}
+                        </h3>
                         <div className="flex items-center mt-2">
                             {blog.image ? (
                                 <img
@@ -130,7 +147,7 @@ const BlogList: React.FC = () => {
                         </div>
                         <div className="flex space-x-2 mt-4">
                             <button
-                                onClick={() => router.push(`/cms/blogs/edit/${blog.id}`)} // Ruta ajustada
+                                onClick={() => router.push(`/cms/blogs/edit/${blog.id}`)}
                                 className="flex items-center space-x-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 text-xs rounded"
                             >
                                 <AiOutlineEdit size={16} />
