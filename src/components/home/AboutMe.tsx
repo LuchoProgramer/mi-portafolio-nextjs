@@ -68,7 +68,7 @@ const AboutMe: React.FC = () => {
                             size={32}
                             className="text-primary hover:text-primary-hover active:text-primary-active dark:text-primary-light transition-colors duration-200 mb-2"
                         />
-                        <p className="text-lg font-semibold text-text-primary dark:text-text-light">Aprendiz de por Vida</p>
+                        <p className="text-lg font-semibold text-text-primary dark:text-text-light">Aprendizaje Constante</p>
                     </div>
                 </div>
             </div>
