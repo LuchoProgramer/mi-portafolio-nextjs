@@ -4,7 +4,7 @@ import React from "react";
 import ProjectCard from "./ProjectCard";
 
 interface Project {
-    id: string; // Cambié a 'id' en lugar de 'index' para una mejor clave única.
+    id: string;
     titulo: string;
     descripcion: string;
     enlace: string;
@@ -15,9 +15,9 @@ interface Project {
 
 const projectList: Project[] = [
     {
-        id: "1",  // Añadí un ID único
-        titulo: "Proyecto 1",
-        descripcion: "Este es un proyecto increíble que realiza tareas fascinantes.",
+        id: "1",
+        titulo: "Healppy Pets - Plataforma de gestión de citas y blog para veterinarias",
+        descripcion: "Plataforma web para veterinarias que facilita la gestión de citas y mejora la presencia en línea a través de un blog optimizado para SEO.",
         enlace: "https://healppypets.netlify.app/",
         enlaceGithub: "https://github.com/LuchoProgramer/HealppyPets",
         tecnologias: ["HTML5", "Bootstrap", "JavaScript"],
@@ -25,11 +25,11 @@ const projectList: Project[] = [
             "https://res.cloudinary.com/dltfsttr7/image/upload/v1731943715/Healppypets_cyyrbj.png",
     },
     {
-        id: "2",  // Añadí un ID único
-        titulo: "Proyecto 2",
-        descripcion: "Este proyecto es innovador y resuelve problemas complejos.",
-        enlace: "https://proyecto2.com",
-        enlaceGithub: "https://github.com/usuario/proyecto2",
+        id: "2",
+        titulo: "La huequita Quiteña - Sistema de Inventario para Licorería",
+        descripcion: "Sistema de inventario a medida, desarrollado en Django y Python, que permite a una licorería gestionar eficientemente su stock, controlar las ventas y optimizar las operaciones diarias.",
+        enlace: "#",
+        enlaceGithub: "#",
         tecnologias: ["Django", "Python", "Bootstrap"],
         imagen:
             "https://res.cloudinary.com/dltfsttr7/image/upload/v1731943714/Healppy-pets-sitioweb_mjh1y8.png",
@@ -43,10 +43,10 @@ const Projects: React.FC = () => {
                 <h2 className="text-3xl font-bold text-center mb-6 text-text-primary dark:text-text-light">
                     Mis Proyectos
                 </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 justify-center items-center">
                     {projectList.map((project) => (
                         <ProjectCard
-                            key={project.id}  // Usamos 'id' como clave única
+                            key={project.id}
                             titulo={project.titulo}
                             descripcion={project.descripcion}
                             enlace={project.enlace}
