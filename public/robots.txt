@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://luchodev.netlify.app/
+
+# Sitemaps
+Sitemap: https://luchodev.netlify.app/sitemap.xml
