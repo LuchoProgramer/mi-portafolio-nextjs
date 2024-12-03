@@ -18,6 +18,7 @@ interface Block {
 
 const BlogCreate: React.FC = () => {
     const [title, setTitle] = useState<string>("");
+    const [author, setAuthor] = useState<string>("");
     const [blocks, setBlocks] = useState<Block[]>([]);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
@@ -61,8 +62,8 @@ const BlogCreate: React.FC = () => {
     const handleCreate = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!title.trim() || blocks.length === 0) {
-            setError("Por favor, completa el título y agrega al menos un bloque.");
+        if (!title.trim() || blocks.length === 0 || !author.trim()) {
+            setError("Por favor, completa todos los campos y agrega al menos un bloque.");
             return;
         }
 
@@ -90,10 +91,14 @@ const BlogCreate: React.FC = () => {
                 image,
                 excerpt,
                 createdAt: new Date(),
+                author: {
+                    name: author.trim(),
+                },
             });
 
             alert("Blog creado exitosamente");
             setTitle("");
+            setAuthor(""); // Limpiar el campo del autor
             setBlocks([]);
             setImageUrl("");
             setImageAlt("");
@@ -124,6 +129,21 @@ const BlogCreate: React.FC = () => {
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                         placeholder="Título del blog"
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900"
+                        required
+                    />
+                </div>
+
+                <div className="mb-6">
+                    <label htmlFor="author" className="block text-gray-700 dark:text-gray-200 font-semibold mb-2">
+                        Autor
+                    </label>
+                    <input
+                        id="author"
+                        type="text"
+                        value={author}
+                        onChange={(e) => setAuthor(e.target.value)}
+                        placeholder="Nombre del autor"
                         className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900"
                         required
                     />

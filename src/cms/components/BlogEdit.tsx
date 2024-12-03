@@ -24,11 +24,12 @@ const BlogEdit = ({ params }: BlogEditProps) => {
     const { id } = params;
 
     const [title, setTitle] = useState<string>("");
+    const [author, setAuthor] = useState<string>(""); // Estado para el autor
     const [blocks, setBlocks] = useState<Block[]>([]);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
-    const [imageUrl, setImageUrl] = useState<string>(""); // Estado para la URL de la imagen
-    const [imageAlt, setImageAlt] = useState<string>(""); // Estado para el texto alternativo
+    const [imageUrl, setImageUrl] = useState<string>("");
+    const [imageAlt, setImageAlt] = useState<string>("");
 
     useEffect(() => {
         const fetchBlog = async () => {
@@ -37,6 +38,7 @@ const BlogEdit = ({ params }: BlogEditProps) => {
                 if (blogDoc.exists()) {
                     const blogData = blogDoc.data();
                     setTitle(blogData.title || "");
+                    setAuthor(blogData.author?.name || ""); // Obtener el nombre del autor
                     setBlocks(blogData.blocks || []);
                 } else {
                     setError("El blog no existe.");
@@ -79,8 +81,8 @@ const BlogEdit = ({ params }: BlogEditProps) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!title.trim() || blocks.length === 0) {
-            setError("Por favor, completa el título y agrega al menos un bloque.");
+        if (!title.trim() || blocks.length === 0 || !author.trim()) {
+            setError("Por favor, completa todos los campos y agrega al menos un bloque.");
             return;
         }
 
@@ -91,6 +93,7 @@ const BlogEdit = ({ params }: BlogEditProps) => {
             await updateDoc(doc(db, "blogs", id), {
                 title: title.trim(),
                 blocks,
+                author: { name: author.trim() }, // Actualizar el autor
                 updatedAt: new Date(),
             });
 
@@ -128,6 +131,24 @@ const BlogEdit = ({ params }: BlogEditProps) => {
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                         placeholder="Título del blog"
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900"
+                        required
+                    />
+                </div>
+
+                <div className="mb-6"> {/* Campo de entrada para el autor */}
+                    <label
+                        htmlFor="author"
+                        className="block text-gray-700 dark:text-gray-200 font-semibold mb-2"
+                    >
+                        Autor
+                    </label>
+                    <input
+                        id="author"
+                        type="text"
+                        value={author}
+                        onChange={(e) => setAuthor(e.target.value)}
+                        placeholder="Nombre del autor"
                         className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900"
                         required
                     />
