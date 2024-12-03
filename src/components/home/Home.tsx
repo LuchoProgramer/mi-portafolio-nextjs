@@ -17,7 +17,7 @@ const Home: React.FC = () => {
     const profileImgBase =
         "https://res.cloudinary.com/dltfsttr7/image/upload/c_fill,w_150,h_150,q_auto,f_webp/v1731879784/Luis_Viteri_lxtxcc.jpg";
 
-    const cvUrl = "https://drive.google.com/file/d/1XjSOKsgLSC99uC47Cm0l-P0dI2ma2Ug5/view"; // URL del CV en Google Drive
+    const cvUrl = "https://drive.google.com/file/d/1XjSOKsgLSC99uC47Cm0l-P0dI2ma2Ug5/view?usp=sharing";
 
     return (
         <section className="relative flex flex-col items-center justify-center min-h-screen bg-gray-light dark:bg-gray-veryDark text-gray-dark dark:text-gray-light px-6 py-10">
