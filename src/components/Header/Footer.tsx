@@ -12,7 +12,7 @@ const Footer = () => {
                 {/* Enlaces de redes sociales */}
                 <div className="flex space-x-6 mt-4 sm:mt-0">
                     <a
-                        href="https://github.com/tuusuario"
+                        href="https://github.com/LuchoProgramer"
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="GitHub"
@@ -28,7 +28,7 @@ const Footer = () => {
                         </svg>
                     </a>
                     <a
-                        href="https://linkedin.com/in/tuusuario"
+                        href="https://www.linkedin.com/in/luisviteri/"
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="LinkedIn"
