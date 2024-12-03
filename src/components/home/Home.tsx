@@ -11,16 +11,19 @@ const Home: React.FC = () => {
     const handleCopyEmail = () => {
         navigator.clipboard.writeText("luchoviteri1990@gmail.com");
         setCopied(true);
-        setTimeout(() => setCopied(false), 2000); // El mensaje desaparece después de 2 segundos
+        setTimeout(() => setCopied(false), 2000);
     };
 
     const profileImgBase =
         "https://res.cloudinary.com/dltfsttr7/image/upload/c_fill,w_150,h_150,q_auto,f_webp/v1731879784/Luis_Viteri_lxtxcc.jpg";
 
+    const cvUrl = "https://res.cloudinary.com/dltfsttr7/image/upload/v1733196526/Luis_Viteri_CV_i7tc2s.pdf"; // URL del CV en Cloudinary
+
+
     return (
         <section className="relative flex flex-col items-center justify-center min-h-screen bg-gray-light dark:bg-gray-veryDark text-gray-dark dark:text-gray-light px-6 py-10">
             <div className="relative z-10 flex flex-col items-center max-w-4xl w-full mx-auto text-center">
-                {/* Saludo y Título */}
+
                 <h2 className="text-4xl font-bold mb-6">
                     ¡Hola! Soy{" "}
                     <span className="text-primary dark:text-primary-light">
@@ -28,20 +31,20 @@ const Home: React.FC = () => {
                     </span>
                 </h2>
 
-                {/* Fila con Foto y Contacto */}
+
                 <div className="flex flex-col md:flex-row items-center justify-center w-full mb-8">
-                    {/* Imagen de Perfil */}
+
                     <Image
                         src={profileImgBase}
                         alt="Foto de Luis Viteri"
                         width={150}
                         height={150}
                         className="rounded-full object-cover shadow-lg transition-transform duration-300 ease-in-out hover:scale-105"
-                        priority // Prioridad alta para optimizar LCP
-                        sizes="(max-width: 768px) 120px, 160px" // Ajusta el tamaño en dispositivos móviles
+                        priority
+                        sizes="(max-width: 768px) 120px, 160px"
                     />
 
-                    {/* Información de Contacto */}
+
                     <div className="flex flex-col items-center md:items-start md:ml-8">
                         <h3 className="text-2xl font-bold mb-4 flex items-center">
                             <FiMail className="mr-2" size={24} />
@@ -72,7 +75,7 @@ const Home: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Íconos de Redes Sociales */}
+
                 <div className="flex justify-center items-center space-x-6 mb-8">
                     <a
                         href="https://www.linkedin.com/in/luisviteri/"
@@ -94,7 +97,7 @@ const Home: React.FC = () => {
                     </a>
                 </div>
 
-                {/* Descripción */}
+
                 <p className="text-xl mb-8 max-w-2xl">
                     Desarrollador Web apasionado por crear experiencias digitales elegantes y
                     funcionales. Especializado en{" "}
@@ -102,14 +105,15 @@ const Home: React.FC = () => {
                     <span className="text-primary dark:text-primary-light">Django</span>.
                 </p>
 
-                {/* Botón de CV */}
+                {/* Botón de CV (con URL de Cloudinary) */}
                 <div className="flex items-center justify-center">
                     <a
-                        href="/path/to/CV.pdf"
-                        download="Luis_Viteri_CV.pdf"
+                        href={cvUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="bg-primary text-white py-2 px-4 rounded-lg hover:bg-primary-light transition"
                     >
-                        Descargar CV
+                        Ver CV
                     </a>
                 </div>
             </div>
