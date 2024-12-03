@@ -78,7 +78,9 @@ const BlogDetail = async ({ params }: BlogDetailPageProps) => {
         "@type": "BlogPosting",
         "headline": blog.title,
         "image": blog.image,
-        "datePublished": blog.createdAt.toISOString(),
+        "datePublished": blog.createdAt instanceof Date
+            ? blog.createdAt.toISOString()
+            : new Date().toISOString(),
         "author": {
             "@type": "Person",
             "name": "Luis Viteri" // Tu nombre como autor
