@@ -154,11 +154,11 @@ const BlogDetail = async ({ params }: BlogDetailPageProps) => {
             <div className="author-bio mt-8 border-t border-gray-200 pt-4 dark:border-gray-700">
                 <p className="text-gray-600 dark:text-gray-400">
                     Escrito por <strong>Luis Viteri</strong>, desarrollador web Full-Stack. Puedes encontrarme en{" "}
-                    <a href="https://twitter.com/luchitoviteri" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
-                        Twitter
+                    <a href="https://www.linkedin.com/in/luisviteri/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+                        Linkedin
                     </a>{" "}
                     y{" "}
-                    <a href="https://github.com/luchitoviteri" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+                    <a href="https://github.com/LuchoProgramer" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
                         GitHub
                     </a>
                     .
