@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import SEO from "@/components/common/SEO";
+import HashScrollHandler from "@/components/common/HashScrollHandler";
 import Home from "@/components/home/Home";
 import AboutMe from "@/components/home/AboutMe";
 import PukaDigital from "@/components/home/PukaDigital";
@@ -100,6 +101,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <>
+      <HashScrollHandler />
       <Home />
       <AboutMe />
       <PukaDigital />

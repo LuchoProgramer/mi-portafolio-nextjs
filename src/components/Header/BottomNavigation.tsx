@@ -3,16 +3,25 @@
 import React from 'react';
 import { FiUser, FiCode, FiBriefcase, FiStar, FiBookOpen, FiMail } from 'react-icons/fi';
 import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 
 const BottomNavigation: React.FC = () => {
+    const pathname = usePathname();
+    const router = useRouter();
     
-    const scrollToSection = (sectionId: string) => {
-        const element = document.getElementById(sectionId);
-        if (element) {
-            element.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start',
-            });
+    const handleSectionClick = (sectionId: string) => {
+        // Si estamos en la página principal, hacer scroll
+        if (pathname === '/') {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start',
+                });
+            }
+        } else {
+            // Si estamos en otra página, navegar a la página principal con el ancla
+            router.push(`/#${sectionId}`);
         }
     };
 
@@ -43,7 +52,7 @@ const BottomNavigation: React.FC = () => {
                     ) : (
                         <button
                             key={item.id}
-                            onClick={() => scrollToSection(item.id)}
+                            onClick={() => handleSectionClick(item.id)}
                             className="flex flex-col items-center justify-center space-y-1 px-2 py-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-300 active:scale-95 active:bg-blue-50 dark:active:bg-blue-900/20 rounded-lg mx-1"
                         >
                             <IconComponent className="w-6 h-6" />

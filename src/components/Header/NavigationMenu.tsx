@@ -3,6 +3,7 @@
 import React from 'react';
 import { FiUser, FiCode, FiBriefcase, FiStar, FiMail, FiBookOpen } from 'react-icons/fi';
 import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 
 interface NavigationMenuProps {
     isOpen?: boolean;
@@ -11,14 +12,25 @@ interface NavigationMenuProps {
 }
 
 const NavigationMenu: React.FC<NavigationMenuProps> = ({ isOpen, toggleMenu }) => {
+    const pathname = usePathname();
+    const router = useRouter();
     
-    const scrollToSection = (sectionId: string) => {
-        const element = document.getElementById(sectionId);
-        if (element) {
-            element.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start',
-            });
+    const handleSectionClick = (sectionId: string) => {
+        // Si estamos en la página principal, hacer scroll
+        if (pathname === '/') {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start',
+                });
+                if (toggleMenu) {
+                    toggleMenu();
+                }
+            }
+        } else {
+            // Si estamos en otra página, navegar a la página principal con el ancla
+            router.push(`/#${sectionId}`);
             if (toggleMenu) {
                 toggleMenu();
             }
@@ -49,7 +61,7 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({ isOpen, toggleMenu }) =
                     ) : (
                         <button
                             key={item.id}
-                            onClick={() => scrollToSection(item.id)}
+                            onClick={() => handleSectionClick(item.id)}
                             className="group px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-all duration-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50"
                         >
                             {item.label}
@@ -79,7 +91,7 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({ isOpen, toggleMenu }) =
                         ) : (
                             <button
                                 key={item.id}
-                                onClick={() => scrollToSection(item.id)}
+                                onClick={() => handleSectionClick(item.id)}
                                 className="w-full flex items-center gap-4 px-4 py-4 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 font-medium transition-all duration-300 rounded-xl text-left animate-fadeInUp"
                                 style={{ animationDelay: `${index * 100}ms` }}
                             >
@@ -92,7 +104,7 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({ isOpen, toggleMenu }) =
                     {/* Mobile CTA */}
                     <div className="pt-6 mt-6 border-t border-gray-200 dark:border-gray-700">
                         <button
-                            onClick={() => scrollToSection('contact')}
+                            onClick={() => handleSectionClick('contact')}
                             className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg animate-fadeInUp"
                             style={{ animationDelay: '400ms' }}
                         >
