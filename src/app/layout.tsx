@@ -4,6 +4,7 @@ import React from "react";
 import { ThemeProvider } from "@/context/ThemeContext";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Header/Footer";
+import BottomNavigation from "@/components/Header/BottomNavigation";
 import "../styles/index.css";
 
 
@@ -16,7 +17,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Header />
 
           {/* Main Content */}
-          <main className="flex-grow pt-16 md:pt-20">{children}</main>
+          <main className="flex-grow pt-16 md:pt-20 pb-24 md:pb-0">{children}</main>
+
+          {/* Bottom Navigation - Solo móvil */}
+          <BottomNavigation />
 
           {/* Footer */}
           <Footer />

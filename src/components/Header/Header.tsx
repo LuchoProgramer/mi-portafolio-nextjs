@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useRef, useEffect, useCallback, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/lib/firebase";
-import { FiMenu, FiX, FiDownload, FiMail } from "react-icons/fi";
 import ToggleDarkMode from "@/components/common/ToggleDarkMode";
 import NavigationMenu from "@/components/Header/NavigationMenu";
 import UserMenu from "@/components/Header/UserMenu";
@@ -13,7 +12,6 @@ import SignIn from "@/components/auth/SignIn";
 import SignUp from "@/components/auth/SignUp";
 import useUserRole from "@/hooks/useUserRole";
 import useModal from "@/hooks/useModal";
-import useNavigationMenu from "@/hooks/useNavigationMenu";
 
 // Usamos React.memo para los componentes que no cambian frecuentemente
 const MemoizedNavigationMenu = React.memo(NavigationMenu);
@@ -22,7 +20,7 @@ const MemoizedModal = React.memo(Modal);
 
 const Header = () => {
     const [user] = useAuthState(auth);
-    const { role, loading: roleLoading, error: roleError } = useUserRole(user ?? null);
+    const { role } = useUserRole(user ?? null);
     const [scrolled, setScrolled] = useState(false);
 
     const {
@@ -35,9 +33,6 @@ const Header = () => {
         switchToSignIn,
     } = useModal();
 
-    const { isOpen, toggleMenu, closeMenu } = useNavigationMenu();
-    const menuRef = useRef<HTMLDivElement>(null);
-
     // Detectar scroll para glassmorphism effect
     useEffect(() => {
         const handleScroll = () => {
@@ -47,26 +42,6 @@ const Header = () => {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
-
-    const handleClickOutside = useCallback(
-        (event: MouseEvent) => {
-            if (isOpen && menuRef.current && !menuRef.current.contains(event.target as Node)) {
-                closeMenu();
-            }
-        },
-        [isOpen, closeMenu]
-    );
-
-    useEffect(() => {
-        if (isOpen) {
-            document.addEventListener("mousedown", handleClickOutside);
-            return () => {
-                document.removeEventListener("mousedown", handleClickOutside);
-            };
-        }
-    }, [isOpen, handleClickOutside]);
-
-    const cvUrl = "https://drive.google.com/file/d/1XjSOKsgLSC99uC47Cm0l-P0dI2ma2Ug5/view?usp=sharing";
 
     return (
         <header className={`fixed w-full z-50 transition-all duration-300 ${
@@ -91,14 +66,10 @@ const Header = () => {
 
                     {/* Desktop Navigation */}
                     <div className="hidden md:flex items-center space-x-8">
-                        <MemoizedNavigationMenu
-                            isOpen={isOpen}
-                            toggleMenu={toggleMenu}
-                            user={user != null}
-                        />
+                        <MemoizedNavigationMenu />
                     </div>
 
-                    {/* Right Side - Simple */}
+                    {/* Right Side - Desktop: Contact + Dark Mode + User, Mobile: Solo Dark Mode + User */}
                     <div className="flex items-center space-x-4">
                         
                         {/* Contact CTA - Solo Desktop */}
@@ -115,34 +86,14 @@ const Header = () => {
                         {/* Dark Mode Toggle */}
                         <ToggleDarkMode />
 
-                        {/* Mobile Menu Button */}
-                        <button
-                            onClick={toggleMenu}
-                            aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
-                            className="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none"
-                        >
-                            {isOpen ? (
-                                <FiX className="w-6 h-6 text-gray-700 dark:text-gray-300" />
-                            ) : (
-                                <FiMenu className="w-6 h-6 text-gray-700 dark:text-gray-300" />
-                            )}
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            {/* Mobile Menu Overlay */}
-            {isOpen && (
-                <div className="md:hidden fixed inset-0 top-16 bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg z-40">
-                    <div ref={menuRef}>
-                        <MemoizedNavigationMenu
-                            isOpen={isOpen}
-                            toggleMenu={toggleMenu}
-                            user={user != null}
+                        {/* User Menu - Visible en todas las pantallas */}
+                        <MemoizedUserMenu
+                            user={user ?? null}
+                            role={role}
                         />
                     </div>
                 </div>
-            )}
+            </div>
 
             {/* Authentication Modal */}
             <MemoizedModal isOpen={isModalOpen} onClose={closeModal}>

@@ -5,9 +5,9 @@ import { FiUser, FiCode, FiBriefcase, FiStar, FiMail, FiBookOpen } from 'react-i
 import Link from 'next/link';
 
 interface NavigationMenuProps {
-    isOpen: boolean;
-    toggleMenu: () => void;
-    user: boolean;
+    isOpen?: boolean;
+    toggleMenu?: () => void;
+    user?: boolean;
 }
 
 const NavigationMenu: React.FC<NavigationMenuProps> = ({ isOpen, toggleMenu }) => {
@@ -19,7 +19,9 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({ isOpen, toggleMenu }) =
                 behavior: 'smooth',
                 block: 'start',
             });
-            toggleMenu();
+            if (toggleMenu) {
+                toggleMenu();
+            }
         }
     };
 
