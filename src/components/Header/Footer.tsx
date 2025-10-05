@@ -67,7 +67,7 @@ const Footer = () => {
                                     <FiLinkedin className="w-5 h-5" />
                                 </a>
                                 <a
-                                    href="https://wa.me/594964065880"
+                                    href="https://wa.me/593964065880"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110"

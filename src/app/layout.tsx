@@ -46,7 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   "description": "Especialista en desarrollo web con React, Next.js, Django y estrategias de marketing digital. Fundador de PukaDigital LLC.",
                   "url": "https://luchodev.netlify.app",
                   "email": "luis.viteri@pukadigital.com",
-                  "telephone": "+594964065880",
+                  "telephone": "+593964065880",
                   "image": "https://res.cloudinary.com/dltfsttr7/image/upload/c_fill,w_400,h_400,q_auto,f_webp/v1731879784/Luis_Viteri_lxtxcc.jpg",
                   "address": {
                     "@type": "PostalAddress",

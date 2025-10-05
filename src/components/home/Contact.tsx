@@ -58,7 +58,7 @@ Email: ${formData.email}`;
         },
         {
             name: "WhatsApp",
-            url: "https://wa.me/594964065880",
+            url: "https://wa.me/593964065880",
             icon: <FaWhatsapp className="w-5 h-5" />,
             color: "hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20"
         }
@@ -74,8 +74,8 @@ Email: ${formData.email}`;
         {
             icon: <FiPhone className="w-5 h-5" />,
             label: "WhatsApp",
-            value: "+594 96 406 5880",
-            action: () => window.open("https://wa.me/594964065880", "_blank")
+            value: "+593 96 406 5880",
+            action: () => window.open("https://wa.me/593964065880", "_blank")
         },
         {
             icon: <FiMapPin className="w-5 h-5" />,
@@ -264,7 +264,7 @@ Email: ${formData.email}`;
                                     Para proyectos con timeline ajustado o consultas rápidas, contáctame directamente por WhatsApp.
                                 </p>
                                 <a
-                                    href="https://wa.me/594964065880?text=Hola%20Luis,%20tengo%20un%20proyecto%20urgente"
+                                    href="https://wa.me/593964065880?text=Hola%20Luis,%20tengo%20un%20proyecto%20urgente"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105"
