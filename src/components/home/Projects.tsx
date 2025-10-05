@@ -3,6 +3,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import ProjectCard from "./ProjectCard";
 import { FiCode, FiTrendingUp, FiGlobe, FiFilter, FiExternalLink, FiGithub } from "react-icons/fi";
+import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 interface Project {
     id: string;
@@ -75,27 +77,13 @@ const projectList: Project[] = [
 const categories = ["Todos", "Desarrollo", "Marketing", "Full-Stack"];
 
 const Projects: React.FC = () => {
-    const [isVisible, setIsVisible] = useState(false);
     const [activeCategory, setActiveCategory] = useState("Todos");
     const [filteredProjects, setFilteredProjects] = useState(projectList);
-    const sectionRef = useRef<HTMLElement>(null);
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setIsVisible(true);
-                }
-            },
-            { threshold: 0.2 }
-        );
-
-        if (sectionRef.current) {
-            observer.observe(sectionRef.current);
-        }
-
-        return () => observer.disconnect();
-    }, []);
+    const { isVisible, elementRef } = useIntersectionObserver({ threshold: 0.2 });
+    const isMobile = useIsMobile();
+    
+    // Show immediately on mobile, otherwise wait for intersection
+    const shouldShow = isMobile || isVisible;
 
     useEffect(() => {
         if (activeCategory === "Todos") {
@@ -113,7 +101,7 @@ const Projects: React.FC = () => {
 
     return (
         <section 
-            ref={sectionRef}
+            ref={elementRef}
             id="projects"
             className="py-20 bg-gradient-to-br from-white via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900 relative overflow-hidden"
         >
@@ -124,7 +112,7 @@ const Projects: React.FC = () => {
             </div>
 
             <div className="max-w-7xl mx-auto px-6 relative z-10">
-                <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                <div className={`transition-all duration-1000 ${shouldShow ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                     
                     {/* Header */}
                     <div className="text-center mb-16">
@@ -169,7 +157,7 @@ const Projects: React.FC = () => {
                             <div 
                                 key={project.id}
                                 className={`transition-all duration-700 delay-${index * 100} ${
-                                    isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                                    shouldShow ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
                                 }`}
                             >
                                 <div className="group bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]">

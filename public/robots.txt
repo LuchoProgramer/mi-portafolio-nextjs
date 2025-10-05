@@ -1,9 +1,46 @@
-# *
+# robots.txt para luchodev.netlify.app
+# Optimizado para SEO y indexación completa
+
 User-agent: *
 Allow: /
+Allow: /blog
+Allow: /blog/*
 
-# Host
-Host: https://luchodev.netlify.app/
+# Bloquear archivos administrativos y temporales
+Disallow: /cms/
+Disallow: /_next/
+Disallow: /.next/
+Disallow: /api/
+Disallow: /*_buildManifest.js
+Disallow: /*_ssgManifest.js
+Disallow: /*.json$
 
-# Sitemaps
+# Permitir bots específicos de SEO
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 2
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+# Host y Sitemaps
+Host: https://luchodev.netlify.app
 Sitemap: https://luchodev.netlify.app/sitemap.xml
+
+# Información adicional
+# Última actualización: 2025-01-05
+# Contacto: luis.viteri@pukadigital.com

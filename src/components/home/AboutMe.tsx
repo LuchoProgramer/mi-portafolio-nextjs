@@ -1,55 +1,48 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { FiCode, FiDatabase, FiSmartphone, FiTrendingUp, FiTarget, FiHeart, FiGlobe, FiZap } from "react-icons/fi";
+import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 const AboutMe: React.FC = () => {
-    const [isVisible, setIsVisible] = useState(false);
     const [counters, setCounters] = useState({ experience: 0, projects: 0, clients: 0 });
-    const sectionRef = useRef<HTMLElement>(null);
+    const { isVisible, elementRef } = useIntersectionObserver({ threshold: 0.2 });
+    const isMobile = useIsMobile();
+
+    // En móvil, mostrar inmediatamente. En desktop, usar animación
+    const shouldShow = isMobile || isVisible;
 
     useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setIsVisible(true);
-                    // Animación de contadores
-                    const animateCounters = () => {
-                        const duration = 2000;
-                        const steps = 60;
-                        const increment = duration / steps;
-                        
-                        let step = 0;
-                        const timer = setInterval(() => {
-                            step++;
-                            const progress = step / steps;
-                            
-                            setCounters({
-                                experience: Math.floor(progress * 3),
-                                projects: Math.floor(progress * 25),
-                                clients: Math.floor(progress * 15)
-                            });
-                            
-                            if (step >= steps) {
-                                clearInterval(timer);
-                                setCounters({ experience: 3, projects: 25, clients: 15 });
-                            }
-                        }, increment);
-                    };
+        if (shouldShow) {
+            // Animación de contadores
+            const animateCounters = () => {
+                const duration = 2000;
+                const steps = 60;
+                const increment = duration / steps;
+                
+                let step = 0;
+                const timer = setInterval(() => {
+                    step++;
+                    const progress = step / steps;
                     
-                    setTimeout(animateCounters, 500);
-                }
-            },
-            { threshold: 0.3 }
-        );
-
-        if (sectionRef.current) {
-            observer.observe(sectionRef.current);
+                    setCounters({
+                        experience: Math.floor(progress * 3),
+                        projects: Math.floor(progress * 25),
+                        clients: Math.floor(progress * 15)
+                    });
+                    
+                    if (step >= steps) {
+                        clearInterval(timer);
+                        setCounters({ experience: 3, projects: 25, clients: 15 });
+                    }
+                }, increment);
+            };
+            
+            setTimeout(animateCounters, 500);
         }
-
-        return () => observer.disconnect();
-    }, []);
+    }, [shouldShow]);
 
     const skills = [
         {
@@ -94,11 +87,11 @@ const AboutMe: React.FC = () => {
     return (
         <section 
             id="about"
-            ref={sectionRef}
+            ref={elementRef}
             className="py-20 bg-gradient-to-br from-white via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-blue-900/10 dark:to-purple-900/10 transition-colors duration-300"
         >
             <div className="max-w-7xl mx-auto px-6">
-                <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                <div className={`transition-all duration-1000 ${shouldShow ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                     
                     {/* Header de la sección */}
                     <div className="text-center mb-16">

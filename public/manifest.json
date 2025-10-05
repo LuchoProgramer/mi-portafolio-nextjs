@@ -1,0 +1,31 @@
+{
+  "name": "Luis Viteri - Luchodev Portfolio",
+  "short_name": "Luchodev",
+  "description": "Desarrollador Full-Stack especializado en React, Next.js, Django y marketing digital",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1e40af",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://res.cloudinary.com/dltfsttr7/image/upload/w_192,h_192,c_fill,q_auto,f_png/v1731879784/Luis_Viteri_lxtxcc.jpg",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://res.cloudinary.com/dltfsttr7/image/upload/w_512,h_512,c_fill,q_auto,f_png/v1731879784/Luis_Viteri_lxtxcc.jpg",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["business", "productivity", "portfolio"],
+  "lang": "es",
+  "dir": "ltr"
+}

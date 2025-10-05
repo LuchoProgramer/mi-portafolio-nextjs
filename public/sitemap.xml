@@ -1,22 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
+  <!-- Homepage Principal -->
+  <url>
+    <loc>https://luchodev.netlify.app/</loc>
+    <lastmod>2025-01-05T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.00</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/dltfsttr7/image/upload/w_1200,h_630,c_fill,q_auto,f_auto,g_face/v1731879784/Luis_Viteri_lxtxcc.jpg</image:loc>
+      <image:title>Luis Viteri - Desarrollador Full-Stack</image:title>
+      <image:caption>Luis Viteri, especialista en React, Next.js, Django y marketing digital</image:caption>
+    </image:image>
+  </url>
 
-<url>
-  <loc>https://luchodev.netlify.app/</loc>
-  <lastmod>2024-12-03T06:07:56+00:00</lastmod>
-  <priority>1.00</priority>
-</url>
-<url>
-  <loc>https://luchodev.netlify.app/blog</loc>
-  <lastmod>2024-12-03T06:07:56+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
+  <!-- Sección Sobre Mí -->
+  <url>
+    <loc>https://luchodev.netlify.app/#about</loc>
+    <lastmod>2025-01-05T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
 
+  <!-- Sección PukaDigital -->
+  <url>
+    <loc>https://luchodev.netlify.app/#pukadigital</loc>
+    <lastmod>2025-01-05T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+
+  <!-- Sección Tecnologías -->
+  <url>
+    <loc>https://luchodev.netlify.app/#technologies</loc>
+    <lastmod>2025-01-05T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Sección Proyectos -->
+  <url>
+    <loc>https://luchodev.netlify.app/#projects</loc>
+    <lastmod>2025-01-05T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/dltfsttr7/image/upload/w_800,h_600,c_fill,q_auto,f_auto/v1732480322/Screenshot_2024-11-24_at_15-31-19_netlify.app.jpg_JPEG_Image_1280_4301_pixels_l1ugdf.png</image:loc>
+      <image:title>Proyectos de Luis Viteri</image:title>
+      <image:caption>Portafolio de proyectos web desarrollados con React, Next.js y Django</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Sección Contacto -->
+  <url>
+    <loc>https://luchodev.netlify.app/#contact</loc>
+    <lastmod>2025-01-05T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- Blog -->
+  <url>
+    <loc>https://luchodev.netlify.app/blog</loc>
+    <lastmod>2025-01-05T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- Proyectos específicos -->
+  <url>
+    <loc>https://healppypets.netlify.app/</loc>
+    <lastmod>2024-12-01T00:00:00+00:00</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.70</priority>
+  </url>
 
 </urlset>

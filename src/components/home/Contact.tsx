@@ -3,9 +3,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FiMail, FiPhone, FiMapPin, FiSend, FiLinkedin, FiGithub, FiGlobe, FiCopy, FiCheck, FiArrowRight } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa";
+import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 const Contact: React.FC = () => {
-    const [isVisible, setIsVisible] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -13,24 +14,11 @@ const Contact: React.FC = () => {
         message: ''
     });
     const [copied, setCopied] = useState('');
-    const sectionRef = useRef<HTMLElement>(null);
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setIsVisible(true);
-                }
-            },
-            { threshold: 0.2 }
-        );
-
-        if (sectionRef.current) {
-            observer.observe(sectionRef.current);
-        }
-
-        return () => observer.disconnect();
-    }, []);
+    const { isVisible, elementRef } = useIntersectionObserver({ threshold: 0.2 });
+    const isMobile = useIsMobile();
+    
+    // Show immediately on mobile, otherwise wait for intersection
+    const shouldShow = isMobile || isVisible;
 
     const handleCopy = (text: string, type: string) => {
         navigator.clipboard.writeText(text);
@@ -99,7 +87,7 @@ Email: ${formData.email}`;
 
     return (
         <section 
-            ref={sectionRef}
+            ref={elementRef}
             id="contact" 
             className="py-20 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white relative overflow-hidden"
         >
@@ -111,7 +99,7 @@ Email: ${formData.email}`;
             </div>
 
             <div className="max-w-7xl mx-auto px-6 relative z-10">
-                <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                <div className={`transition-all duration-1000 ${shouldShow ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                     
                     {/* Header */}
                     <div className="text-center mb-16">

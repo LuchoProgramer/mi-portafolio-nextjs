@@ -3,6 +3,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 const technologies = [
     { 
@@ -73,9 +75,12 @@ const technologies = [
 const Technologies = () => {
     const [isDarkMode, setIsDarkMode] = useState(false);
     const [activeCategory, setActiveCategory] = useState("All");
-    const [isVisible, setIsVisible] = useState(false);
     const [animatedLevels, setAnimatedLevels] = useState<{ [key: string]: number }>({});
-    const sectionRef = useRef<HTMLElement>(null);
+    const { isVisible, elementRef } = useIntersectionObserver({ threshold: 0.2 });
+    const isMobile = useIsMobile();
+
+    // En móvil, mostrar inmediatamente. En desktop, usar animación
+    const shouldShow = isMobile || isVisible;
 
     const categories = ["All", "Frontend", "Backend", "Tools"];
 
@@ -94,33 +99,21 @@ const Technologies = () => {
     }, []);
 
     useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setIsVisible(true);
-                    // Animar los niveles de las tecnologías
-                    const animateSkills = () => {
-                        technologies.forEach((tech, index) => {
-                            setTimeout(() => {
-                                setAnimatedLevels(prev => ({
-                                    ...prev,
-                                    [tech.name]: tech.level
-                                }));
-                            }, index * 200);
-                        });
-                    };
-                    setTimeout(animateSkills, 500);
-                }
-            },
-            { threshold: 0.3 }
-        );
-
-        if (sectionRef.current) {
-            observer.observe(sectionRef.current);
+        if (shouldShow) {
+            // Animar los niveles de las tecnologías
+            const animateSkills = () => {
+                technologies.forEach((tech, index) => {
+                    setTimeout(() => {
+                        setAnimatedLevels(prev => ({
+                            ...prev,
+                            [tech.name]: tech.level
+                        }));
+                    }, index * 200);
+                });
+            };
+            setTimeout(animateSkills, 500);
         }
-
-        return () => observer.disconnect();
-    }, []);
+    }, [shouldShow]);
 
     const filteredTechnologies = activeCategory === "All" 
         ? technologies 
@@ -140,12 +133,12 @@ const Technologies = () => {
 
     return (
         <section 
-            ref={sectionRef}
+            ref={elementRef}
             id="technologies"
             className="py-20 bg-gradient-to-br from-white via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900"
         >
             <div className="max-w-7xl mx-auto px-6">
-                <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                <div className={`transition-all duration-1000 ${shouldShow ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                     
                     {/* Header */}
                     <div className="text-center mb-16">

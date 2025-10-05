@@ -4,6 +4,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { FiGlobe } from "react-icons/fi";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 interface Language {
     idioma: string;
@@ -34,34 +36,20 @@ const languages: Language[] = [
 ];
 
 const Languages: React.FC = () => {
-    const [isVisible, setIsVisible] = useState(false);
-    const sectionRef = useRef<HTMLElement>(null);
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setIsVisible(true);
-                }
-            },
-            { threshold: 0.2 }
-        );
-
-        if (sectionRef.current) {
-            observer.observe(sectionRef.current);
-        }
-
-        return () => observer.disconnect();
-    }, []);
+    const { isVisible, elementRef } = useIntersectionObserver({ threshold: 0.2 });
+    const isMobile = useIsMobile();
+    
+    // Show immediately on mobile, otherwise wait for intersection
+    const shouldShow = isMobile || isVisible;
 
     return (
         <section 
-            ref={sectionRef}
+            ref={elementRef}
             id="languages" 
             className="py-20 bg-gradient-to-br from-white via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900"
         >
             <div className="max-w-6xl mx-auto px-6">
-                <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                <div className={`transition-all duration-1000 ${shouldShow ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                     
                     {/* Header */}
                     <div className="text-center mb-16">
@@ -87,7 +75,7 @@ const Languages: React.FC = () => {
                                 className={`
                                     bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-xl 
                                     transform transition-all duration-700 hover:scale-105
-                                    ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
+                                    ${shouldShow ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
                                 `}
                                 style={{ 
                                     transitionDelay: `${index * 200}ms`,

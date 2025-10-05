@@ -1,30 +1,18 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { FiTrendingUp, FiGlobe, FiTarget, FiUsers, FiCode, FiBarChart, FiZap, FiPlay, FiCalendar, FiArrowUp } from "react-icons/fi";
+import { FiTrendingUp, FiUsers, FiAward, FiArrowRight, FiLayers, FiZap, FiTarget, FiGlobe, FiCode, FiArrowUp, FiCalendar, FiPlay } from "react-icons/fi";
+import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { FaGoogle, FaFacebookF, FaChartLine } from "react-icons/fa";
 
 const PukaDigital: React.FC = () => {
-    const [isVisible, setIsVisible] = useState(false);
     const [activeService, setActiveService] = useState(0);
-    const sectionRef = useRef<HTMLElement>(null);
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setIsVisible(true);
-                }
-            },
-            { threshold: 0.3 }
-        );
-
-        if (sectionRef.current) {
-            observer.observe(sectionRef.current);
-        }
-
-        return () => observer.disconnect();
-    }, []);
+    const { isVisible, elementRef } = useIntersectionObserver({ threshold: 0.3 });
+    const isMobile = useIsMobile();
+    
+    // Show immediately on mobile, otherwise wait for intersection
+    const shouldShow = isMobile || isVisible;
 
     const services = [
         {
@@ -72,7 +60,7 @@ const PukaDigital: React.FC = () => {
 
     return (
         <section 
-            ref={sectionRef}
+            ref={elementRef}
             id="pukadigital"
             className="py-20 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white relative overflow-hidden"
         >
@@ -84,7 +72,7 @@ const PukaDigital: React.FC = () => {
             </div>
 
             <div className="max-w-7xl mx-auto px-6 relative z-10">
-                <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                <div className={`transition-all duration-1000 ${shouldShow ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                     
                     {/* Header con Logo */}
                     <div className="text-center mb-16">

@@ -4,11 +4,17 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { FiCopy, FiCheck, FiMail, FiSend, FiArrowDown, FiCode, FiZap } from "react-icons/fi";
 import { FaLinkedin, FaGithub } from "react-icons/fa";
+import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 const Home: React.FC = () => {
     const [copied, setCopied] = useState(false);
-    const [isVisible, setIsVisible] = useState(false);
     const [currentText, setCurrentText] = useState(0);
+    const { isVisible, elementRef } = useIntersectionObserver({ threshold: 0.1 });
+    const isMobile = useIsMobile();
+    
+    // Show immediately on mobile, otherwise wait for intersection
+    const shouldShow = isMobile || isVisible;
 
     const dynamicTexts = [
         "Full-Stack Developer",
@@ -20,7 +26,6 @@ const Home: React.FC = () => {
     ];
 
     useEffect(() => {
-        setIsVisible(true);
         const interval = setInterval(() => {
             setCurrentText((prev) => (prev + 1) % dynamicTexts.length);
         }, 3000);
@@ -45,8 +50,13 @@ const Home: React.FC = () => {
 
     return (
         <section 
+            ref={elementRef}
             id="home"
-            className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900 -mt-16 md:-mt-20 pt-16 md:pt-20">
+            itemScope
+            itemType="https://schema.org/Person"
+            className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900 -mt-16 md:-mt-20 pt-16 md:pt-20"
+            aria-label="Inicio - Luis Viteri Desarrollador Full-Stack"
+        >
             {/* Fondo animado con partículas */}
             <div className="absolute inset-0 overflow-hidden">
                 <div className="absolute -inset-10 opacity-20">
@@ -56,7 +66,7 @@ const Home: React.FC = () => {
                 </div>
             </div>
 
-            <div className={`relative z-10 max-w-6xl mx-auto px-6 py-20 text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <div className={`relative z-10 max-w-6xl mx-auto px-6 py-20 text-center transition-all duration-1000 ${shouldShow ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 
                 {/* Badge profesional */}
                 <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-full dark:text-blue-400 dark:bg-blue-900/30 dark:border-blue-800">
