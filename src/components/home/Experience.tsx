@@ -22,10 +22,10 @@ const Experience: React.FC = () => {
                         </h3>
                     </div>
                     <p className="text-gray-700 dark:text-gray-300 mb-4">
-                        He trabajado como freelancer, desarrollando proyectos para diversas empresas. Estos proyectos han fortalecido mis habilidades en desarrollo web, manejo de clientes y adaptación a distintos requerimientos y tecnologías.
+                        He desarrollado mis habilidades técnicas a través de una combinación de proyectos freelance, desarrollo de aplicaciones web personalizadas y colaboraciones con pequeñas empresas. Mi enfoque ha sido siempre crear soluciones eficientes y escalables que satisfagan las necesidades específicas de cada cliente.
                     </p>
                     <p className="text-gray-700 dark:text-gray-300">
-                        Actualmente, estoy en el proceso de crear mi propia startup de desarrollo de software, donde puedo aplicar y expandir mis conocimientos, desarrollando soluciones tecnológicas a medida para clientes.
+                        Durante este tiempo, he trabajado con tecnologías como React, Django, JavaScript y Python, desarrollando desde sitios web responsivos hasta sistemas complejos de gestión empresarial.
                     </p>
                 </div>
 
@@ -35,10 +35,10 @@ const Experience: React.FC = () => {
                         <FaGraduationCap
                             size={32}
                             className="text-primary dark:text-primary-light mr-4"
-                            aria-label="Icono de Formación y Motivación"
+                            aria-label="Icono de Formación Académica"
                         />
                         <h3 className="text-2xl font-semibold text-gray-800 dark:text-gray-100">
-                            Formación y Motivación
+                            Formación y Desarrollo Continuo
                         </h3>
                     </div>
                     <p className="text-gray-700 dark:text-gray-300 mb-4">

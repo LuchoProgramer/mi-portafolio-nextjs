@@ -1,48 +1,97 @@
 import React from "react";
+import { FiGithub, FiLinkedin, FiMail, FiMapPin } from "react-icons/fi";
+import { FaWhatsapp } from "react-icons/fa";
 
 const Footer = () => {
     return (
-        <footer className="bg-primary-dark text-white py-6 mt-8">
-            <div className="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center">
-                {/* Texto de derechos reservados */}
-                <p className="text-sm sm:text-base">
-                    &copy; 2024 Luis Viteri. Todos los derechos reservados.
-                </p>
+        <footer className="bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 text-white py-12 border-t border-white/10">
+            <div className="max-w-6xl mx-auto px-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                    
+                    {/* Brand & Info */}
+                    <div className="space-y-4">
+                        <div className="font-mono bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg px-4 py-2 text-lg font-bold inline-block">
+                            {"<Lucho_dev />"}
+                        </div>
+                        <p className="text-blue-200 text-sm leading-relaxed">
+                            Desarrollador Full-Stack & Digital Entrepreneur especializado en crear experiencias web modernas y estrategias de marketing digital.
+                        </p>
+                        <div className="flex items-center gap-2 text-blue-300">
+                            <FiMapPin className="w-4 h-4" />
+                            <span className="text-sm">Ecuador 🇪🇨 | Nomad Digital</span>
+                        </div>
+                    </div>
 
-                {/* Enlaces de redes sociales */}
-                <div className="flex space-x-6 mt-4 sm:mt-0">
-                    <a
-                        href="https://github.com/LuchoProgramer"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label="GitHub"
-                        className="hover:text-primary-light transition-colors duration-300"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-6 w-6"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path d="M12 0C5.37258 0 0 5.37258 0 12C0 17.3033 3.43836 21.799 8.20507 23.385C8.80507 23.4851 9.02507 23.1251 9.02507 22.805C9.02507 22.5151 9.01507 21.7551 9.01007 20.7551C5.6725 21.4351 4.96875 19.1551 4.96875 19.1551C4.4225 17.9551 3.6325 17.5951 3.6325 17.5951C2.5475 16.9751 3.7125 16.9851 3.7125 16.9851C4.9125 16.9751 6.0475 18.1051 6.0475 18.1051C7.1725 19.9751 8.6025 19.4851 9.2125 19.1551C9.3125 18.3751 9.6125 17.8151 10.0025 17.4951C7.3925 17.1751 4.5725 16.3051 4.5725 11.5551C4.5725 10.2351 5.0225 9.15507 5.80507 8.33507C5.69007 7.01507 5.2125 5.95507 4.42507 5.10507C4.42507 5.10507 5.38007 4.78507 9.0025 6.42507C9.9825 6.15507 11.0225 6.03507 12.0625 6.03007C13.1025 6.03507 14.1425 6.15507 15.1225 6.42507C18.7425 4.78507 19.6975 5.10507 19.6975 5.10507C18.9125 5.95507 18.435 7.01507 18.32 8.33507C19.1025 9.15507 19.5525 10.2351 19.5525 11.5551C19.5525 16.3151 16.7275 17.1751 14.1175 17.4951C14.5225 17.8651 14.9025 18.6051 14.9025 19.7151C14.9025 21.2851 14.89 22.6351 14.89 22.805C14.89 23.1251 15.1025 23.4851 15.7125 23.385C20.4784 21.799 24 17.3033 24 12C24 5.37258 18.6274 0 12 0Z" />
-                        </svg>
-                    </a>
-                    <a
-                        href="https://www.linkedin.com/in/luisviteri/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label="LinkedIn"
-                        className="hover:text-primary-light transition-colors duration-300"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-6 w-6"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-11 19h-3v-9h3v9zm-1.5-10.268c-.966 0-1.75-.784-1.75-1.75s.784-1.75 1.75-1.75 1.75.784 1.75 1.75-.784 1.75-1.75 1.75zm13.5 10.268h-3v-4.5c0-1.084-.916-2-2-2s-2 .916-2 2v4.5h-3v-9h3v1.268c.584-.867 1.583-1.268 2.5-1.268 2.485 0 4.5 2.015 4.5 4.5v4.732z" />
-                        </svg>
-                    </a>
+                    {/* Quick Links */}
+                    <div className="space-y-4">
+                        <h3 className="text-lg font-semibold">Enlaces Rápidos</h3>
+                        <div className="grid grid-cols-2 gap-2">
+                            <a href="#about" className="text-blue-200 hover:text-white transition-colors text-sm">Sobre mí</a>
+                            <a href="#technologies" className="text-blue-200 hover:text-white transition-colors text-sm">Skills</a>
+                            <a href="#projects" className="text-blue-200 hover:text-white transition-colors text-sm">Proyectos</a>
+                            <a href="#pukadigital" className="text-blue-200 hover:text-white transition-colors text-sm">PukaDigital</a>
+                            <a href="#contact" className="text-blue-200 hover:text-white transition-colors text-sm">Contacto</a>
+                            <a href="/blog" className="text-blue-200 hover:text-white transition-colors text-sm">Blog</a>
+                        </div>
+                    </div>
+
+                    {/* Contact & Social */}
+                    <div className="space-y-4">
+                        <h3 className="text-lg font-semibold">Conectemos</h3>
+                        <div className="space-y-3">
+                            <a 
+                                href="mailto:luis.viteri@pukadigital.com"
+                                className="flex items-center gap-3 text-blue-200 hover:text-white transition-colors text-sm"
+                            >
+                                <FiMail className="w-4 h-4" />
+                                <span>luis.viteri@pukadigital.com</span>
+                            </a>
+                            
+                            <div className="flex space-x-4 pt-2">
+                                <a
+                                    href="https://github.com/LuchoProgramer"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110"
+                                    aria-label="GitHub"
+                                >
+                                    <FiGithub className="w-5 h-5" />
+                                </a>
+                                <a
+                                    href="https://www.linkedin.com/in/luisviteri/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110"
+                                    aria-label="LinkedIn"
+                                >
+                                    <FiLinkedin className="w-5 h-5" />
+                                </a>
+                                <a
+                                    href="https://wa.me/594964065880"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110"
+                                    aria-label="WhatsApp"
+                                >
+                                    <FaWhatsapp className="w-5 h-5" />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Bottom Bar */}
+                <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p className="text-blue-200 text-sm">
+                        © 2024 Luis Viteri | PukaDigital LLC. Todos los derechos reservados.
+                    </p>
+                    <div className="flex items-center gap-4 text-sm text-blue-300">
+                        <span>Hecho con ❤️ en Ecuador</span>
+                        <span>•</span>
+                        <a href="#contact" className="hover:text-white transition-colors">
+                            ¿Trabajamos juntos?
+                        </a>
+                    </div>
                 </div>
             </div>
         </footer>

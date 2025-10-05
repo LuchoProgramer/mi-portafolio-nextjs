@@ -8,6 +8,11 @@ import Comments from "@/components/blogs/Comments";
 
 // Función para obtener un blog por su "slug" desde Firebase
 const getBlogBySlug = async (slug: string): Promise<Blog | null> => {
+    // Durante el build, retornamos null para evitar errores de Firebase
+    if (process.env.NODE_ENV === 'production' || !process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
+        return null;
+    }
+    
     try {
         const blogsRef = collection(db, "blogs");
         const q = query(blogsRef, where("slug", "==", slug));

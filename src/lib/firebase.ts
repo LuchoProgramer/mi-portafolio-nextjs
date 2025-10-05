@@ -11,6 +11,9 @@ import {
     orderBy,
     limit,
     Timestamp,
+    where,
+    getDoc,
+    onSnapshot,
 } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { Blog } from '../types';
@@ -23,6 +26,7 @@ const firebaseConfig = {
     storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
     messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
     appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+    measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
 // Inicializar Firebase
@@ -32,6 +36,14 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 const db = getFirestore(app);
+
+// Solo inicializar Analytics en el cliente
+let analytics = null;
+if (typeof window !== 'undefined') {
+    import('firebase/analytics').then(({ getAnalytics }) => {
+        analytics = getAnalytics(app);
+    });
+}
 
 // Función utilitaria para obtener referencias de blogs
 const getBlogRef = (id: string) => doc(db, "blogs", id);
@@ -79,7 +91,7 @@ export const getBlogs = async (limitNumber = 10): Promise<Blog[]> => {
         return blogs;
     } catch (error) {
         console.error("Error al obtener los blogs: ", error);
-        throw new Error("No se pudieron cargar los blogs.");
+        return []; // Retornar array vacío en lugar de lanzar error
     }
 };
 

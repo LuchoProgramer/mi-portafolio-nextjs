@@ -10,13 +10,13 @@ import "../styles/index.css";
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
-      <body className="flex flex-col min-h-screen">
+      <body className="flex flex-col min-h-screen bg-white dark:bg-gray-900">
         <ThemeProvider>
           {/* Header */}
           <Header />
 
           {/* Main Content */}
-          <main className="flex-grow">{children}</main>
+          <main className="flex-grow pt-16 md:pt-20">{children}</main>
 
           {/* Footer */}
           <Footer />
