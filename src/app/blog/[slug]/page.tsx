@@ -1,4 +1,3 @@
-import Head from 'next/head'; // Importa Head de esta manera
 import React from 'react';
 import { Metadata } from "next";
 import { collection, query, where, getDocs } from "firebase/firestore";
@@ -22,11 +21,6 @@ const formatDate = (date: any): string => {
 
 // Función para obtener un blog por su "slug" desde Firebase
 const getBlogBySlug = async (slug: string): Promise<Blog | null> => {
-    // Durante el build, retornamos null para evitar errores de Firebase
-    if (process.env.NODE_ENV === 'production' || !process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
-        return null;
-    }
-    
     try {
         const blogsRef = collection(db, "blogs");
         const q = query(blogsRef, where("slug", "==", slug));
@@ -41,7 +35,34 @@ const getBlogBySlug = async (slug: string): Promise<Blog | null> => {
         return null;
     } catch (error) {
         console.error("Error al obtener el blog:", error);
-        return null;
+        // Si hay error de Firebase, retornamos un blog de ejemplo
+        return {
+            id: "ejemplo-blog",
+            title: "Bienvenido a mi Blog",
+            slug: slug,
+            content: "Este es un blog de ejemplo mientras configuramos Firebase.",
+            excerpt: "Blog de ejemplo con contenido de prueba",
+            image: "",
+            alt: "",
+            blocks: [
+                {
+                    type: "text",
+                    content: `
+                        <h2>¡Hola! Bienvenido a mi blog</h2>
+                        <p>Actualmente estoy configurando el sistema de blogs. Pronto encontrarás aquí contenido sobre desarrollo web, tecnología y proyectos interesantes.</p>
+                        <p>Mientras tanto, puedes explorar el resto de mi portafolio para conocer más sobre mi trabajo y experiencia.</p>
+                        <h3>¿Qué encontrarás aquí?</h3>
+                        <ul>
+                            <li>Tutoriales de desarrollo web</li>
+                            <li>Proyectos y casos de estudio</li>
+                            <li>Reflexiones sobre tecnología</li>
+                            <li>Tips y trucos de programación</li>
+                        </ul>
+                    `
+                }
+            ],
+            createdAt: new Date(),
+        };
     }
 };
 
@@ -113,13 +134,6 @@ const BlogDetail = async ({ params }: BlogDetailPageProps) => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900">
-            <Head>
-                <script
-                    type="application/ld+json"
-                    dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }}
-                />
-            </Head>
-
             {/* Hero Section */}
             <div className="relative pt-24 pb-12 overflow-hidden">
                 <div className="absolute inset-0">

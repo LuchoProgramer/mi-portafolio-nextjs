@@ -92,7 +92,7 @@ const Header = () => {
                     {/* Desktop Navigation */}
                     <div className="hidden md:flex items-center space-x-8">
                         <MemoizedNavigationMenu
-                            isOpen={false}
+                            isOpen={isOpen}
                             toggleMenu={toggleMenu}
                             user={user != null}
                         />

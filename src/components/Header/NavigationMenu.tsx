@@ -40,7 +40,6 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({ isOpen, toggleMenu }) =
                         <Link
                             key={item.id}
                             href={item.href || '/'}
-                            onClick={toggleMenu}
                             className="group px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-all duration-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50"
                         >
                             {item.label}

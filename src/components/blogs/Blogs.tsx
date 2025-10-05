@@ -19,15 +19,90 @@ const Blogs: React.FC = () => {
         const fetchBlogs = async () => {
             try {
                 const blogsList = await getBlogs();
-                const blogsWithImage = blogsList.map(blog => ({
-                    ...blog,
-                    image: blog.image ?? undefined,
-                    alt: blog.alt ?? undefined,
-                }));
-                setBlogs(blogsWithImage);
-                setFilteredBlogs(blogsWithImage);
+                if (blogsList.length === 0) {
+                    // Si no hay blogs en Firebase, usar blogs de ejemplo
+                    const exampleBlogs: Blog[] = [
+                        {
+                            id: "ejemplo-1",
+                            title: "Construyendo el Portafolio Perfecto en 2025",
+                            slug: "portafolio-perfecto-2025",
+                            content: "Guía completa para crear un portafolio que destaque en el mercado actual.",
+                            excerpt: "Descubre las mejores prácticas para crear un portafolio web moderno que capture la atención de empleadores y clientes.",
+                            image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop",
+                            alt: "Desarrollador trabajando en código",
+                            blocks: [
+                                {
+                                    type: "text",
+                                    content: "<p>Este es un blog de ejemplo mientras configuramos el sistema completo.</p>"
+                                }
+                            ],
+                            createdAt: new Date('2024-12-01')
+                        },
+                        {
+                            id: "ejemplo-2", 
+                            title: "El Futuro del Desarrollo Web",
+                            slug: "futuro-desarrollo-web",
+                            content: "Explorando las tendencias emergentes que definirán el desarrollo web.",
+                            excerpt: "Análisis de las tecnologías y metodologías que transformarán la industria del desarrollo web en los próximos años.",
+                            image: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=800&h=400&fit=crop",
+                            alt: "Tecnología futurista",
+                            blocks: [
+                                {
+                                    type: "text",
+                                    content: "<p>Contenido de ejemplo sobre el futuro del desarrollo web.</p>"
+                                }
+                            ],
+                            createdAt: new Date('2024-11-15')
+                        },
+                        {
+                            id: "ejemplo-3",
+                            title: "Optimización de Performance en React",
+                            slug: "optimizacion-performance-react", 
+                            content: "Técnicas avanzadas para mejorar el rendimiento de aplicaciones React.",
+                            excerpt: "Aprende las estrategias más efectivas para optimizar el rendimiento de tus aplicaciones React y ofrecer mejores experiencias de usuario.",
+                            image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&h=400&fit=crop",
+                            alt: "Código React",
+                            blocks: [
+                                {
+                                    type: "text",
+                                    content: "<p>Guía detallada sobre optimización en React.</p>"
+                                }
+                            ],
+                            createdAt: new Date('2024-11-01')
+                        }
+                    ];
+                    setBlogs(exampleBlogs);
+                    setFilteredBlogs(exampleBlogs);
+                } else {
+                    const blogsWithImage = blogsList.map(blog => ({
+                        ...blog,
+                        image: blog.image ?? undefined,
+                        alt: blog.alt ?? undefined,
+                    }));
+                    setBlogs(blogsWithImage);
+                    setFilteredBlogs(blogsWithImage);
+                }
             } catch (error) {
                 console.error('Error al cargar los blogs:', error);
+                // En caso de error, también usar blogs de ejemplo
+                const exampleBlogs: Blog[] = [
+                    {
+                        id: "ejemplo-1",
+                        title: "Bienvenido a mi Blog",
+                        slug: "bienvenido-blog",
+                        content: "Mi primer artículo de blog.",
+                        excerpt: "Una introducción a mi blog personal sobre desarrollo web y tecnología.",
+                        blocks: [
+                            {
+                                type: "text",
+                                content: "<p>¡Hola! Este es mi blog donde compartiré contenido sobre desarrollo web.</p>"
+                            }
+                        ],
+                        createdAt: new Date()
+                    }
+                ];
+                setBlogs(exampleBlogs);
+                setFilteredBlogs(exampleBlogs);
             } finally {
                 setLoading(false);
             }
