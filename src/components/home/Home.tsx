@@ -28,7 +28,7 @@ const Home: React.FC = () => {
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentText((prev) => (prev + 1) % dynamicTexts.length);
-        }, 3000);
+        }, 4000); // Reducir a 4 segundos para mejor ritmo
         return () => clearInterval(interval);
     }, []);
 
@@ -76,20 +76,29 @@ const Home: React.FC = () => {
                 </div>
 
                 {/* Título principal con efecto gradiente */}
-                <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 dark:from-white dark:via-blue-200 dark:to-purple-200 bg-clip-text text-transparent leading-tight">
-                    Hola, soy{" "}
-                    <span className="relative">
+                <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                    <span className="bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 dark:from-white dark:via-blue-200 dark:to-purple-200 bg-clip-text text-transparent">
+                        Hola, soy{" "}
+                    </span>
+                    <span className="relative text-blue-600 dark:text-blue-400">
                         Luchodev
                         <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full"></div>
                     </span>
                 </h1>
 
-                {/* Texto dinámico */}
+                {/* Texto dinámico con mejor contraste */}
                 <div className="mb-8 h-16 flex items-center justify-center">
-                    <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 font-medium">
+                    <p className="text-xl md:text-2xl font-medium">
                         <span className="inline-flex items-center gap-2">
-                            <FiCode className="text-blue-500" />
-                            <span key={currentText} className="animate-fadeInUp">
+                            <FiCode className="text-blue-500 dark:text-blue-400" />
+                            <span 
+                                key={currentText} 
+                                className="animate-fadeInUp font-bold text-2xl md:text-3xl text-blue-600 dark:text-blue-400 drop-shadow-lg"
+                                style={{
+                                    textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+                                    color: '#2563eb'
+                                }}
+                            >
                                 {dynamicTexts[currentText]}
                             </span>
                         </span>

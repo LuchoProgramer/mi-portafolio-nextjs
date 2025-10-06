@@ -63,7 +63,7 @@ const projectList: Project[] = [
         enlace: "#",
         enlaceGithub: "#",
         tecnologias: ["Next.js", "Google Ads", "GA4", "Heat Maps", "A/B Testing"],
-        imagen: "https://res.cloudinary.com/dltfsttr7/image/upload/c_fill,w_600,h_400,q_auto,f_webp/v1731879784/Luis_Viteri_lxtxcc.jpg",
+        imagen: "/logo-Puka.svg",
         categoria: "Marketing Digital",
         tipo: "marketing",
         metricas: {
