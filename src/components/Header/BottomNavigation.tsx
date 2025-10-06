@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FiUser, FiCode, FiBriefcase, FiStar, FiBookOpen, FiMail } from 'react-icons/fi';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -8,6 +8,37 @@ import { usePathname, useRouter } from 'next/navigation';
 const BottomNavigation: React.FC = () => {
     const pathname = usePathname();
     const router = useRouter();
+    const [activeSection, setActiveSection] = useState<string>('');
+    
+    // Detectar en qué sección estamos cuando scrolleamos
+    useEffect(() => {
+        if (pathname !== '/') return;
+
+        const handleScroll = () => {
+            const sections = ['about', 'projects', 'pukadigital', 'contact'];
+            const scrollPosition = window.scrollY + window.innerHeight / 2;
+
+            for (const sectionId of sections) {
+                const element = document.getElementById(sectionId);
+                if (element) {
+                    const { offsetTop, offsetHeight } = element;
+                    if (scrollPosition >= offsetTop && scrollPosition <= offsetTop + offsetHeight) {
+                        setActiveSection(sectionId);
+                        return;
+                    }
+                }
+            }
+            
+            // Si estamos en el top, no marcar ninguna sección como activa
+            if (window.scrollY < 200) {
+                setActiveSection('');
+            }
+        };
+
+        handleScroll(); // Ejecutar una vez al cargar
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [pathname]);
     
     const handleSectionClick = (sectionId: string) => {
         // Si estamos en la página principal, hacer scroll
@@ -27,7 +58,6 @@ const BottomNavigation: React.FC = () => {
 
     const menuItems = [
         { id: 'about', label: 'Sobre mí', icon: FiUser, type: 'scroll', color: 'blue' },
-        { id: 'technologies', label: 'Skills', icon: FiCode, type: 'scroll', color: 'emerald' },
         { id: 'projects', label: 'Proyectos', icon: FiBriefcase, type: 'scroll', color: 'purple' },
         { id: 'pukadigital', label: 'PukaDigital', icon: FiStar, type: 'scroll', color: 'amber' },
         { id: 'blog', label: 'Blog', icon: FiBookOpen, type: 'link', href: '/blog', color: 'rose' },
@@ -35,9 +65,16 @@ const BottomNavigation: React.FC = () => {
     ];
 
     const getActiveState = (item: any) => {
+        // Para enlaces de páginas (como blog)
         if (item.type === 'link' && pathname === item.href) {
             return true;
         }
+        
+        // Para secciones de la página principal
+        if (item.type === 'scroll' && pathname === '/' && activeSection === item.id) {
+            return true;
+        }
+        
         return false;
     };
 
@@ -85,11 +122,11 @@ const BottomNavigation: React.FC = () => {
 
     return (
         <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50">
-            {/* Background with subtle glass effect */}
-            <div className="absolute inset-0 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border-t border-gray-200/50 dark:border-gray-700/50 shadow-lg"></div>
+            {/* Completely transparent background - no blue box */}
+            <div className="absolute inset-0"></div>
             
-            {/* Navigation content */}
-            <div className="relative grid grid-cols-6 h-18 py-2 px-1">
+            {/* Clean navigation content */}
+            <div className="relative grid grid-cols-5 h-16 py-2 px-4 bg-white/70 dark:bg-gray-900/70 backdrop-blur-sm">
                 {menuItems.map((item) => {
                     const IconComponent = item.icon;
                     const isActive = getActiveState(item);
@@ -100,31 +137,38 @@ const BottomNavigation: React.FC = () => {
                             key={item.id}
                             href={item.href || '/'}
                             className={`
-                                relative flex flex-col items-center justify-center gap-2 px-2 py-2
-                                transition-all duration-300 ease-out transform
+                                relative flex flex-col items-center justify-center gap-1 px-1 py-1
+                                transition-all duration-200 ease-out
                                 ${colors.text}
-                                hover:scale-105 active:scale-95 
+                                active:scale-95 
                                 group
+                                !bg-transparent !border-none !p-0 !rounded-none !shadow-none
                             `}
+                            style={{
+                                backgroundColor: 'transparent !important',
+                                border: 'none !important',
+                                padding: '0.25rem !important',
+                                borderRadius: '0 !important',
+                                boxShadow: 'none !important'
+                            }}
                         >
-                            {/* Simple dot indicator for active state */}
+                            {/* Elegant dot indicator for active state */}
                             {isActive && (
-                                <div className={`absolute -top-0.5 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 ${colors.indicator} rounded-full`}></div>
+                                <div className={`absolute -top-1.5 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 ${colors.indicator} rounded-full shadow-sm animate-pulse`}></div>
                             )}
                             
-                            {/* Clean icon without background */}
+                            {/* Clean icon with subtle active state */}
                             <div className={`
-                                transition-all duration-300
-                                ${isActive ? 'scale-110' : 'group-hover:scale-105'}
+                                transition-all duration-200
+                                ${isActive ? 'scale-110' : ''}
                             `}>
-                                <IconComponent className="w-6 h-6" />
+                                <IconComponent className={`w-6 h-6 ${isActive ? 'drop-shadow-sm' : ''}`} />
                             </div>
                             
-                            {/* Better contrast text */}
+                            {/* Text with active state styling */}
                             <span className={`
-                                text-xs font-medium leading-tight text-center
-                                transition-all duration-300
-                                ${isActive ? 'font-semibold' : 'group-hover:font-semibold'}
+                                text-xs font-medium text-center transition-all duration-200
+                                ${isActive ? 'font-semibold scale-105' : ''}
                             `}>
                                 {item.label}
                             </span>
@@ -134,31 +178,38 @@ const BottomNavigation: React.FC = () => {
                             key={item.id}
                             onClick={() => handleSectionClick(item.id)}
                             className={`
-                                relative flex flex-col items-center justify-center gap-2 px-2 py-2
-                                transition-all duration-300 ease-out transform
+                                relative flex flex-col items-center justify-center gap-1 px-1 py-1
+                                transition-all duration-200 ease-out
                                 ${colors.text}
-                                hover:scale-105 active:scale-95 
+                                active:scale-95 
                                 group
+                                !bg-transparent !border-none !p-0 !rounded-none !shadow-none
                             `}
+                            style={{
+                                backgroundColor: 'transparent !important',
+                                border: 'none !important',
+                                padding: '0.25rem !important',
+                                borderRadius: '0 !important',
+                                boxShadow: 'none !important'
+                            }}
                         >
-                            {/* Simple dot indicator for active state */}
+                            {/* Elegant dot indicator for active state */}
                             {isActive && (
-                                <div className={`absolute -top-0.5 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 ${colors.indicator} rounded-full`}></div>
+                                <div className={`absolute -top-1.5 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 ${colors.indicator} rounded-full shadow-sm animate-pulse`}></div>
                             )}
                             
-                            {/* Clean icon without background */}
+                            {/* Clean icon with subtle active state */}
                             <div className={`
-                                transition-all duration-300
-                                ${isActive ? 'scale-110' : 'group-hover:scale-105'}
+                                transition-all duration-200
+                                ${isActive ? 'scale-110' : ''}
                             `}>
-                                <IconComponent className="w-6 h-6" />
+                                <IconComponent className={`w-6 h-6 ${isActive ? 'drop-shadow-sm' : ''}`} />
                             </div>
                             
-                            {/* Better contrast text */}
+                            {/* Text with active state styling */}
                             <span className={`
-                                text-xs font-medium leading-tight text-center
-                                transition-all duration-300
-                                ${isActive ? 'font-semibold' : 'group-hover:font-semibold'}
+                                text-xs font-medium text-center transition-all duration-200
+                                ${isActive ? 'font-semibold scale-105' : ''}
                             `}>
                                 {item.label}
                             </span>
