@@ -39,7 +39,7 @@ const Home: React.FC = () => {
     };
 
     const profileImgBase =
-        "https://res.cloudinary.com/dltfsttr7/image/upload/c_fill,w_300,h_300,q_auto,f_webp/v1731879784/Luis_Viteri_lxtxcc.jpg";
+        "https://res.cloudinary.com/dltfsttr7/image/upload/c_fill,w_300,h_300,q_auto,f_webp/v1759786002/LuisViteri_rwyq16.png";
 
     const cvUrl = "https://drive.google.com/file/d/1XjSOKsgLSC99uC47Cm0l-P0dI2ma2Ug5/view?usp=sharing";
 
