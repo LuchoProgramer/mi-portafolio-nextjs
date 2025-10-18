@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import ProjectCard from "./ProjectCard";
 
 interface Project {
@@ -27,7 +28,7 @@ const projectList: Project[] = [
     {
         id: "2",
         titulo: "La huequita Quiteña - Sistema de Inventario para Licorería",
-        descripcion: "Sistema de inventario a medida, desarrollado en Django y Python, que permite a una licorería gestionar eficientemente su stock, controlar las ventas y optimizar las operaciones diarias.",
+        descripcion: "Sistema de inventario a medida, desarrollado en Django y Python, que permite gestionar eficientemente stock, controlar ventas y optimizar operaciones diarias.",
         enlace: "#",
         enlaceGithub: "#",
         tecnologias: ["Django", "Python", "Bootstrap"],
@@ -38,12 +39,15 @@ const projectList: Project[] = [
 
 const Projects: React.FC = () => {
     return (
-        <section className="p-8 bg-background-light dark:bg-background-dark">
-            <div className="max-w-6xl mx-auto">
-                <h2 className="text-3xl font-bold text-center mb-6 text-text-primary dark:text-text-light">
+        <section id="work" className="py-16 bg-white dark:bg-gray-900">
+            <div className="max-w-6xl mx-auto px-6">
+                {/* Título */}
+                <h2 className="text-4xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100">
                     Mis Proyectos
                 </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 justify-center items-center">
+
+                {/* Grid de proyectos */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
                     {projectList.map((project) => (
                         <ProjectCard
                             key={project.id}
@@ -55,6 +59,27 @@ const Projects: React.FC = () => {
                             imagen={project.imagen}
                         />
                     ))}
+                </div>
+
+                {/* CTA a Puka Digital */}
+                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-8 md:p-12 text-center">
+                    <p className="text-gray-700 dark:text-gray-300 mb-4 text-base">
+                        Estos son mis <span className="font-semibold">proyectos técnicos</span> destacados.
+                    </p>
+                    
+                    <p className="text-gray-700 dark:text-gray-300 mb-6 text-base">
+                        Para ver casos donde combinamos <span className="font-semibold">tecnología + marketing digital</span> para 
+                        generar <span className="font-semibold text-blue-600 dark:text-blue-400">resultados monetarios reales</span>:
+                    </p>
+                    
+                    <Link
+                        href="https://pukadigital.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-8 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-semibold rounded-lg transition-colors duration-300"
+                    >
+                        → Ver todos los casos en Puka Digital
+                    </Link>
                 </div>
             </div>
         </section>

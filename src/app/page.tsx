@@ -6,8 +6,6 @@ import Technologies from "@/components/home/Technologies";
 import Projects from "@/components/home/Projects";
 import Experience from "@/components/home/Experience";
 import Languages from "@/components/home/Languages";
-import Hobbies from "@/components/home/Hobbies";
-import TravelMap from "@/components/home/TravelMap";
 
 export default function Page() {
   return (
@@ -47,8 +45,6 @@ export default function Page() {
       <Projects />
       <Experience />
       <Languages />
-      <Hobbies />
-      <TravelMap />
     </>
   );
 }
