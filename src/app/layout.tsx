@@ -3,7 +3,6 @@
 import React from "react";
 import { ThemeProvider } from "@/context/ThemeContext";
 import Header from "@/components/Header/Header";
-import Footer from "@/components/Header/Footer";
 import "../styles/index.css";
 
 
@@ -17,9 +16,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
           {/* Main Content */}
           <main className="flex-grow">{children}</main>
-
-          {/* Footer */}
-          <Footer />
         </ThemeProvider>
       </body>
     </html>
