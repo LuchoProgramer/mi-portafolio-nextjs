@@ -13,7 +13,7 @@ export default function Page() {
       />
       
       <Section title="Sobre mí">
-        <div className="space-y-4 text-gray-700 dark:text-gray-300 leading-relaxed">
+        <div className="space-y-4 text-gray-700 leading-relaxed">
           <p>
             Soy Luis Viteri, CEO y fundador de <strong>Puka Digital</strong>. Con más de 3 años en marketing digital y desarrollo web, pasé de ser freelancer a crear una startup enfocada en resultados verificables.
           </p>

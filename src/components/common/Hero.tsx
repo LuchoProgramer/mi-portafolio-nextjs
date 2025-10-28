@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 interface HeroProps {
   title: string;
@@ -11,12 +12,21 @@ interface HeroProps {
 
 export default function Hero({ title, subtitle, ctaText, ctaHref }: HeroProps) {
   return (
-    <section className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-950 px-6">
-      <div className="max-w-2xl w-full text-center">
-        <h1 className="text-5xl md:text-6xl font-bold text-black dark:text-white mb-6 leading-tight">
+    <section className="min-h-screen flex items-center justify-center bg-white px-6">
+      <div className="max-w-3xl w-full text-center flex flex-col items-center">
+        <div className="w-48 h-48 mb-8 relative">
+          <Image
+            src="https://res.cloudinary.com/dltfsttr7/image/upload/v1759786002/LuisViteri_rwyq16.png"
+            alt="Luis Viteri"
+            fill
+            className="rounded-full object-cover shadow-lg"
+            priority
+          />
+        </div>
+        <h1 className="text-5xl md:text-6xl font-bold text-black mb-6 leading-tight">
           {title}
         </h1>
-        <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-12 leading-relaxed">
+        <p className="text-lg md:text-xl text-gray-600 mb-12 leading-relaxed">
           {subtitle}
         </p>
         {ctaText && ctaHref && (
